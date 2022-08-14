@@ -1,0 +1,78 @@
+{
+  "name": "@herbivore/core",
+  "version": "1.2.1",
+  "description": "Herbivore Password Manager - Core",
+  "author": "herbivore",
+  "license": "MIT",
+  "main": "./index.ts",
+  "typings": "./index.d.ts",
+  "scripts": {
+    "prepare": "npm run build",
+    "build": "tsc",
+    "test": "NODE_OPTIONS=--loader=ts-node/esm jasmine --config=jasmine.json",
+    "postinstall": "npm run typings",
+    "typings": "typings install",
+    "publish": "npm publish --access public"
+  },
+  "engines": {
+    "node": "^14.15.0 || >=16.10.0"
+  },
+  "dependencies": {
+    "ts-md5": "^1.2.11",
+    "mongoose": "^6.5.0",
+    "tslib": "^2.4.0"
+  },
+  "devDependencies": {
+    "@skypack/package-check": "^0.2.2",
+    "@types/jasmine": "^4.0.3",
+    "@types/node": "^18.6.4",
+    "jasmine": "^4.3.0",
+    "jasmine-spec-reporter": "^7.0.0",
+    "ts-node": "^10.9.1",
+    "typescript": "^4.7.4"
+  },
+  "exports": {
+    ".": {
+      "types": "./index.d.ts",
+      "default": "./index.js"
+    },
+    "./package.json": "./package.json",
+    "./utils": {
+      "types": "./utils/index.d.ts",
+      "default": "./utils/index.js"
+    },
+    "./utils/errors": {
+      "types": "./utils/errors.d.ts",
+      "default": "./utils/errors.js"
+    },
+    "./utils/conversion": {
+      "types": "./utils/conversion.d.ts",
+      "default": "./utils/conversion.js"
+    },
+    "./utils/interfaces": {
+      "types": "./utils/interfaces.d.ts",
+      "default": "./utils/interfaces.js"
+    },
+    "./utils/functions": {
+      "types": "./utils/functions.d.ts",
+      "default": "./utils/functions.js"
+    },
+    "./utils/constants": {
+      "types": "./utils/constants.d.ts",
+      "default": "./utils/constants.js"
+    },
+    "./utils/timer": {
+      "types": "./utils/timer.d.ts",
+      "default": "./utils/timer.js"
+    }
+  },
+  "keywords": [
+    "core",
+    "hpm",
+    "password",
+    "password manager"
+  ],
+  "directories": {
+    "lib": ""
+  }
+}

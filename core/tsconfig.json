@@ -1,0 +1,33 @@
+{
+	"compileOnSave" : true,
+	"compilerOptions" : {
+		"module" : "NodeNext",
+		"target" : "ES2017",
+		"allowJs" : true,
+		"skipLibCheck" : true,
+		"baseUrl" : "./lib",
+		"lib" : [
+			"es2017",
+			"dom"
+		],
+		"importHelpers" : true,
+		"forceConsistentCasingInFileNames": true,
+		"strict": true,
+		"noImplicitReturns": true,
+		"noFallthroughCasesInSwitch": true,
+		"declaration": true,
+		"downlevelIteration": true,
+		"experimentalDecorators": true,
+		"allowSyntheticDefaultImports" : true,
+		"moduleResolution" : "Node",
+		"outDir": "./dist",
+		"rootDir": "./lib",
+		"esModuleInterop" : true,
+		"typeRoots" : ["node_modules/@types"]
+	},
+	"exclude" : [
+		"node_modules",
+		"dist",
+		"lib/spec"
+	]
+}
