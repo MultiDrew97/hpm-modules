@@ -1,11 +1,11 @@
 {
   "name": "@herbivore/api",
-  "version": "1.1.0",
+  "version": "1.1.11",
   "description": "Herbivore Password Manager - API",
   "author": "herbivore",
   "license": "MIT",
-  "main": "index.ts",
-  "typings": "./index.d.ts",
+  "main": "index.js",
+  "typings": "index.d.ts",
   "scripts": {
     "prepublish": "npm run build",
     "build": "tsc",
@@ -61,8 +61,5 @@
     "hpm",
     "password",
     "password manager"
-  ],
-  "directories": {
-    "lib": ""
-  }
+  ]
 }
