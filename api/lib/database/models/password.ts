@@ -1,14 +1,13 @@
 import { IPassEntry } from "@herbivore/core/utils/interfaces";
-import {Model, model, Schema, SchemaTypes} from "mongoose";
+import {Model, model, Schema, SchemaTypes, Document} from "mongoose";
 import {User} from "./user";
 
-
-interface IPassEntryDoc extends IPassEntry {
+interface IPassEntryDoc extends IPassEntry, Document {
 	updatePassword(newPassword: string): Promise<boolean>
 }
 
 interface IPassEntryModel extends Model<IPassEntryDoc> {
-	addEntry(userID: string, newEntry: IPassEntry): Promise<void>
+	addEntry(userID: string, newEntry: IPassEntry): Promise<boolean>
 }
 
 const entrySchema: Schema<IPassEntryDoc> = new Schema({
@@ -51,9 +50,15 @@ const entrySchema: Schema<IPassEntryDoc> = new Schema({
 	console.debug(this.login.password)
 })*/
 
-entrySchema.static('addEntry', function(userID: string, newEntry: IPassEntry) {
+entrySchema.static('addEntry', function(userID: string, newEntry: IPassEntry): Promise<boolean> {
 	return PasswordEntry.create(newEntry).then(password => {
-		User.addPassword(userID, password.id)
+		return User.addPassword(userID, password.id).then(_ => {
+			return true
+		}).catch(_ => {
+			return false
+		})
+	}).catch(_ => {
+		return false
 	})
 })
 

@@ -9,6 +9,7 @@ export declare interface IDbEntry extends Document {
 	 * ID of the current database entry
 	 */
 	_id: string;
+
 	/**
 	 * Name of site/person
 	 */
@@ -22,19 +23,29 @@ export declare interface IDbConfig {
 	 * Login credentials for database connection
 	 */
 	login: IAuth;
+
+	/**
+	 * The uri to use for the connection
+	 */
+	uri: string | URL
+
 	/**
 	 * The desired page to connect to
 	 */
 	desiredPage: string;
+
 	/**
 	 * Options for the connection
 	 */
-	options: IConnectOptions;
+	options: ConnectOptions;
 }
 /**
  * Connection options for a database connection
+ * @deprecated Please use the ConnectOptions interface from
+ * @see ConnectOptions
  */
 export declare interface IConnectOptions extends ConnectOptions {
+	// TODO: Make this better for database connections
 	useNewUrlParser: boolean;
 	useUnifiedTopology: boolean;
 }
@@ -63,10 +74,12 @@ export declare interface IPassEntry extends IDbEntry {
 	 * The sites that the password are used for
 	 */
 	sites: string[];
+
 	/**
 	 * The login for the sites
 	 */
 	login: IAuth;
+
 	/**
 	 * Previous password history when updating passwords
 	 */
@@ -80,16 +93,38 @@ export declare interface ICookie {
 	 * The name of the cookie in the cookie section
 	 */
 	name: string;
+
 	/**
 	 * The different options for the cookie
 	 */
-	options: {
-		path?: string;
-		domain?: string;
-		expires?: number;
-		secure?: boolean;
-		sameSite?: SameSite;
-	};
+	options: ICookieOptions;
+}
+
+export declare interface ICookieOptions {
+	/**
+	 * The path to store the cookie
+	 */
+	path?: string;
+
+	/**
+	 * The domain of the site the cookie is for
+	 */
+	domain?: string;
+
+	/**
+	 * When the cookie is meant to expire
+	 */
+	expires?: number;
+
+	/**
+	 * Should the cookie be secure
+	 */
+	secure?: boolean;
+
+	/**
+	 * How strict is the cookie
+	 */
+	sameSite?: SameSite;
 }
 /**
  * Used for storing credential data
@@ -99,10 +134,12 @@ export declare interface IAuth {
 	 * The username
 	 */
 	username: string;
+
 	/**
 	 * The password
 	 */
 	password: string;
+
 	/**
 	 * The salt for encryption
 	 */
@@ -125,9 +162,28 @@ export declare interface IDialog {
 }
 
 export declare interface ITimerConfig {
+	/**
+	 * The name of the timer
+	 */
 	name: string
+
+	/**
+	 * The function that the timer will be executing
+	 */
 	fn: TimerHandler | Function
+
+	/**
+	 * How long will the timer take to execute
+	 */
 	time?: number
+
+	/**
+	 * What kind of timer is it
+	 */
 	type: TimerType
+
+	/**
+	 * Any arguments that are to be passed to the function
+	 */
 	args: any[]
 }

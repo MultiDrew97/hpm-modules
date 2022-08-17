@@ -1,9 +1,9 @@
 import {getAuth} from "../utils"
 import {IncomingHttpHeaders} from "http";
-import {verifyHeaders, verifyIDs} from "./helpers/functions";
-import {encode} from "@herbivore/core/utils"
+import {ArgumentError, AuthorizationError, encode} from "@herbivore/core/utils"
 import {IAuth} from "@herbivore/core/utils/interfaces";
 import {Types} from "mongoose";
+import {validateHeaders, validateQueryID} from "../utils";
 
 let apiAuth: IAuth = {
 	username: "username",
@@ -25,12 +25,22 @@ describe('General Utility Functions', function () {
 	});
 
 	it('should verify proper headers are present', function () {
-		expect(verifyHeaders(validHeader, authRegex, apiAuth)).toBeTrue()
-		expect(verifyHeaders(invalidHeader, authRegex, apiAuth)).toBeFalse()
+		expect(() => {
+			validateHeaders(validHeader, authRegex, apiAuth)
+		}).not.toThrowError(ArgumentError)
+
+		expect(() => {
+			validateHeaders(invalidHeader, authRegex, apiAuth)
+		}).toThrowError(AuthorizationError)
 	});
 
 	it('should correctly validate the query IDs', function () {
-		expect(verifyIDs(...validIDs)).toBeTrue()
-		expect(verifyIDs(...invalidIDs)).toBeFalse()
+		expect(() => {
+			validateQueryID(...validIDs)
+		}).not.toThrowError(ArgumentError)
+
+		expect(() => {
+			validateQueryID(...invalidIDs)
+		}).toThrowError(ArgumentError)
 	});
 });

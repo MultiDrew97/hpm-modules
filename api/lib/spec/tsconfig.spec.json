@@ -1,5 +1,5 @@
 {
-	"extends" : "./tsconfig.json",
+	"extends" : "../../tsconfig.json",
 	"compilerOptions" : {
 		"target": "ES2020",
 		"module" : "ES2020",
@@ -10,9 +10,9 @@
 	"ts-node" : {
 		"transpileOnly" : true
 	},
-	"files" : ["lib/spec"],
+	"files" : [],
 	"include": [
-		"lib/spec/**/*.spec.ts",
-		"lib/spec/**/*.d.ts"
+		"./**/*.spec.ts",
+		"./**/*.d.ts"
 	]
 }
