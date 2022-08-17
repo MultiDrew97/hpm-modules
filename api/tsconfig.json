@@ -20,6 +20,7 @@
 		"experimentalDecorators": true,
 		"allowSyntheticDefaultImports" : true,
 		"moduleResolution" : "Node",
+		"outDir" : "./dist",
 		"rootDir": "./lib",
 		"esModuleInterop" : true
 	},

@@ -9,13 +9,13 @@ interface IUserDoc extends IUser {
 }
 
 interface IUserModel extends Model<IUserDoc> {
-	login(auth: IAuth): Promise<boolean>
+	login(auth: IAuth): Promise<IUserDoc>
 	checkPassword(id: string, password: string): Promise<boolean>
 	isUniqueUsername(username: string): Promise<boolean>
 	getSalt(id: string): Promise<string>
-	addPassword(userID: string, entryID: string): void
+	addPassword(userID: string, entryID: string): Promise<IUserDoc>
 	removePassword(userID: string, entryID: string): Promise<boolean>
-	updatePassword(userID: string, newPassword: string): Promise<any>
+	updatePassword(userID: string, newPassword: string): Promise<boolean>
 	getUserConfig(userID: string): Promise<IUserConfig>
 }
 
@@ -73,10 +73,14 @@ userSchema.pre(/find.*/, function() {
 userSchema.static('updatePassword', function(userID: string, newPassword: string) {
 	return User.findById(userID).then(user => {
 		if (!user)
-			throw new DatabaseError(`No user found with ID ${userID}`)
+			throw new DatabaseError(`Unknown userID ${userID}`)
 
 		user.password = encrypt(newPassword, user.salt)
-		return user.save()
+		return user.save().then(_ => {
+			return true
+		}).catch(_ => {
+			return false
+		})
 	})
 })
 
@@ -85,7 +89,7 @@ userSchema.static('login', async function(auth: IAuth): Promise<IUserDoc> {
 	let user = await this.findOne({username: auth.username}, 'id password salt')
 
 	if (!user)
-		throw new LoginError("Username not present")
+		throw new LoginError("Unknown username")
 
 	if (user.password !== (encrypt(auth.password, user.salt)))
 		throw new LoginError("Incorrect password")
@@ -98,7 +102,7 @@ userSchema.static('checkPassword', async function(id: string, password: string):
 	let user = await this.findById(id, 'id password salt')
 
 	if (!user)
-		throw new LoginError("User not found")
+		throw new LoginError(`Unknown userID ${id}`)
 
 	if (user.password !== (encrypt(password, user.salt)))
 		throw new LoginError("Incorrect password")
@@ -106,7 +110,7 @@ userSchema.static('checkPassword', async function(id: string, password: string):
 	return true
 })
 
-userSchema.static('addPassword', function(userID: string, entryID: string) {
+userSchema.static('addPassword', function(userID: string, entryID: string): Promise<IUserDoc> {
 	return this.findById(userID).then((user: IUserDoc) => {
 		user.entries.push(entryID)
 		return user.save()
@@ -115,19 +119,10 @@ userSchema.static('addPassword', function(userID: string, entryID: string) {
 
 userSchema.static('removePassword', function(userID: string, entryID: string): Promise<boolean> {
 	return this.findById(userID).then((user: IUserDoc) => {
-		console.log(entryID)
-		console.log(user.entries)
-		/*user.passwords.findIndex((item, index) => {
-			if ((<IPasswordEntry>item).id == entryID)
-				return index
-
-			return -1
-		})*/
 		let index = indexOf(user.entries, entryID, 'id')
-		console.log("FINAL INDEX: ", index)
 
 		if (index < 0)
-			throw new ArgumentError(`EntryID ${entryID} not present for UserID ${userID}`);
+			throw new ArgumentError(`Unknown entryID ${entryID} for userID ${userID}`);
 
 		const removed = user.entries.splice(index, 1);
 		return user.save().then(_ => {
@@ -145,7 +140,7 @@ userSchema.static('removePassword', function(userID: string, entryID: string): P
 userSchema.static('getSalt', async function(id: any): Promise<string> {
 	return await User.findById(id).then(user => {
 		if (!user)
-			throw new DatabaseError(`Unable to find a user with id ${id}`)
+			throw new DatabaseError(`Unknown userID ${id}`)
 
 		return user.password
 	})
@@ -154,7 +149,7 @@ userSchema.static('getSalt', async function(id: any): Promise<string> {
 userSchema.static('getUserConfig', async function(userID: string): Promise<IUserConfig> {
 	return await User.findById(userID, 'config').then(user => {
 		if (!user)
-			throw new DatabaseError(`Unable to find user with id ${userID}`)
+			throw new DatabaseError(`Unknown userID ${userID}`)
 
 		return user.config
 	})

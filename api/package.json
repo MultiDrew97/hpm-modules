@@ -4,12 +4,13 @@
   "description": "Herbivore Password Manager - API",
   "author": "herbivore",
   "license": "MIT",
-  "main": "index.js",
+  "main": "lib/index.js",
   "typings": "index.d.ts",
   "scripts": {
     "prepublish": "npm run build",
     "build": "tsc",
-    "test": "NODE_OPTIONS=--loader=ts-node/esm jasmine --config=jasmine.json",
+    "build:test": "tsc -p lib/spec/tsconfig.spec.json",
+    "test": "NODE_OPTIONS=--loader=ts-node/esm jasmine --config=./lib/spec/jasmine.json",
     "publish": "npm publish --access public"
   },
   "engines": {
@@ -61,5 +62,8 @@
     "hpm",
     "password",
     "password manager"
+  ],
+  "files": [
+    "../dist/"
   ]
 }

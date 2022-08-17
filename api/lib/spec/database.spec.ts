@@ -1,6 +1,5 @@
 import {connect, disconnect, ConnectOptions, Types} from "mongoose"
-import {login, getUser, getPassEntry, checkPassword} from "./helpers/functions"
-import {LoginError} from "@herbivore/core/utils/errors";
+import {User, PasswordEntry} from "../database";
 
 const options: ConnectOptions = {
 	auth: {
@@ -35,29 +34,29 @@ describe('Database User Schema', function () {
 	})
 
 	it('should correctly login a user', async function () {
-		expect(await login(validUser)).toBeTrue()
-		expect(await login(invalidUser)).toBeFalse()
+		await expectAsync(User.login(validUser)).toBeResolved()
+		await expectAsync(User.login(invalidUser)).toBeRejected()
 	});
 
 	it('should correctly retrieve users from database', async function () {
-		expect(await getUser()).toBeDefined()
-		expect(await getUser("invalid")).toBeUndefined()
+		await expectAsync(User.find()).toBeResolved()
+		await expectAsync(User.findById(invalidUser.id)).toBeRejectedWithError("Unknown user")
 	});
 
 	it('should correctly retrieve password entries', async function () {
-		expect(await getPassEntry(validUser.id)).toBeDefined()
-		expect(await getPassEntry(invalidUser.id)).toBeUndefined()
+		await expectAsync(User.findById(validUser.id)).toBeResolved()
+		await expectAsync(User.findById(invalidUser.id)).toBeRejectedWithError("Unknown user")
 	});
 
 	it("should correctly verify a user' password", async function () {
-		expect(await checkPassword(validUser.id, validUser.password))
-			.withContext("Valid ID and password").toBeTrue()
+		await expectAsync(User.checkPassword(validUser.id, validUser.password))
+			.withContext("Valid ID and password").toBeResolvedTo(true)
 
-		expect(await checkPassword(validUser.id, ""))
-			.withContext("Valid ID, invalid password").toThrow(LoginError)
+		await expectAsync(User.checkPassword(validUser.id, ""))
+			.withContext("Valid ID, invalid password").toBeRejectedWithError("Incorrect password")
 
-		expect(await checkPassword(invalidUser.id, invalidUser.password))
-			.withContext("Invalid ID and password").toThrowError(LoginError, "User not found")
+		await expectAsync(User.checkPassword(invalidUser.id, invalidUser.password))
+			.withContext("Invalid ID and password").toBeRejectedWithError("User not found")
 	});
 });
 
