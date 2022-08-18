@@ -2,6 +2,7 @@ import {connect, disconnect, ConnectOptions, Types} from "mongoose"
 import {User, PasswordEntry} from "../database";
 import {IPassEntry} from "@herbivore/core/utils/interfaces";
 import {LoginError} from "@herbivore/core/utils/errors";
+import {IPassEntryDoc} from "../database/models/password";
 
 const options: ConnectOptions = {
 	auth: {
@@ -97,8 +98,15 @@ describe('Database Passwords Schema', function () {
 	});
 
 	it('should properly update the password for the entry', async function () {
-		PasswordEntry.create(testEntry).then(entry => {
-			expectAsync(entry.updatePassword("test2")).toBeResolvedTo(true)
-		})
+		let testEntryDoc: IPassEntryDoc = await PasswordEntry.create(testEntry)
+		const finalPassword = [ 'test5', 'test6', 'test7', 'test8', 'test9' ]
+
+		for (let i = 1; i <= 10; i++) {
+			await expectAsync(testEntryDoc.updatePassword(`test${i}`)).toBeResolvedTo(true)
+		}
+
+		expect(testEntryDoc.passwordHistory).toEqual(finalPassword)
+
+		await PasswordEntry.findByIdAndDelete(testEntryDoc.id)
 	});
 });

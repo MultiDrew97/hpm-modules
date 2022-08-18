@@ -2,7 +2,7 @@ import { IPassEntry } from "@herbivore/core/utils/interfaces";
 import {Model, model, Schema, SchemaTypes, Document} from "mongoose";
 import {User} from "./user";
 
-interface IPassEntryDoc extends IPassEntry, Document {
+export interface IPassEntryDoc extends IPassEntry, Document {
 	updatePassword(newPassword: string): Promise<boolean>
 }
 

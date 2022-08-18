@@ -4,7 +4,7 @@ import {encrypt, indexOf, DEFAULT_CONFIG} from "@herbivore/core/utils";
 import {ArgumentError, DatabaseError, LoginError} from "@herbivore/core/utils/errors"
 import {PasswordEntry} from "./password";
 
-interface IUserDoc extends IUser, Document {
+export interface IUserDoc extends IUser, Document {
 }
 
 interface IUserModel extends Model<IUserDoc> {
