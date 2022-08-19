@@ -17,17 +17,18 @@ const desiredPage: string = "HPM-Test"
 
 const uri = `mongodb+srv://herbivores-password-man.wci8d.mongodb.net/${desiredPage}`
 
+const validUser = {
+	id: "6260a5690814821a97aa218d",
+	username: "username",
+	password: "password"
+}
+const invalidUser = {
+	id: (new Types.ObjectId()).toString(),
+	username: "invalid",
+	password: "invalidPassword"
+}
+
 describe('Database User Schema', function () {
-	const validUser = {
-		id: "6260a5690814821a97aa218d",
-		username: "username",
-		password: "password"
-	}
-	const invalidUser = {
-		id: (new Types.ObjectId()).toString(),
-		username: "invalid",
-		password: "invalidPassword"
-	}
 	beforeAll(async () => {
 		await connect(uri, options)
 	})

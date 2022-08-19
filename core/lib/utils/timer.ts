@@ -20,6 +20,8 @@ export class Timer {
 	 */
 	private _config?: ITimerConfig
 
+	private _running: boolean = false
+
 	/**
 	 * The name for the Timer
 	 * @constructor
@@ -34,6 +36,10 @@ export class Timer {
 
 	set TimerConfig(newConfig: ITimerConfig | undefined) {
 		this._config = newConfig
+	}
+
+	get isRunning(): boolean {
+		return this._running
 	}
 
 	/**
@@ -52,10 +58,8 @@ export class Timer {
 	 * Start the timer
 	 */
 	start(): void {
-		if (!this.TimerConfig) {
-			console.log("No config present. Throwing timer error")
+		if (!this.TimerConfig)
 			throw new TimerError('No config present')
-		}
 
 		if (!this.TimerConfig.fn)
 			throw new TimerError('No function present in config')
@@ -65,9 +69,11 @@ export class Timer {
 				this._timerID = setInterval((...args: any[]) => {
 					(<Function>this.TimerConfig?.fn).apply(args[0], args)
 				}, this.TimerConfig.time, this.TimerConfig.args)
+				this._running = true
 				break
 			case "timeout":
 				this._timerID = setTimeout(this.TimerConfig.fn, this.TimerConfig.time, this.TimerConfig.args)
+				this._running = true
 				break
 			/*case "immediate":
 				this._timerID = setImmediate(<(...args: any[]) => void>this._config.fn!, this._config.args)
@@ -81,15 +87,17 @@ export class Timer {
 	 * Stop the timer
 	 */
 	stop(): void {
-		if (!this._timerID || !this.TimerConfig)
-			throw new TimerError("Timer was not started")
+		if (!this._timerID || !this.TimerConfig || !this.isRunning)
+			throw new TimerError("Timer not started")
 
 		switch (this.TimerConfig.type) {
 			case "interval":
 				clearInterval(<number>this._timerID)
+				this._running = false
 				break
 			case "timeout":
 				clearTimeout(<number>this._timerID)
+				this._running = false
 				break
 			/*case "immediate":
 				clearImmediate(<NodeJS.Immediate>this._timerID)

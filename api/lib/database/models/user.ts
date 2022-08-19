@@ -12,7 +12,7 @@ interface IUserModel extends Model<IUserDoc> {
 	checkPassword(id: string, password: string): Promise<boolean>
 	isUniqueUsername(username: string): Promise<boolean>
 	getSalt(id: string): Promise<string>
-	addPassword(userID: string, entryID: string): Promise<IUserDoc>
+	addPassword(userID: string, entryID: string): void
 	removePassword(userID: string, entryID: string): Promise<boolean>
 	updatePassword(userID: string, newPassword: string): Promise<boolean>
 	getUserConfig(userID: string): Promise<IUserConfig>
@@ -149,7 +149,7 @@ userSchema.static('removePassword', function(userID: string, entryID: string): P
 userSchema.static('getSalt', async function(id: any): Promise<string> {
 	return await User.findById(id).then(user => {
 		if (!user)
-			throw new ArgumentError(`Unknown userID ${id}`)
+			throw new DatabaseError(`Unknown userID ${id}`)
 
 		return user.password
 	})
@@ -158,7 +158,7 @@ userSchema.static('getSalt', async function(id: any): Promise<string> {
 userSchema.static('getUserConfig', async function(userID: string): Promise<IUserConfig> {
 	return await User.findById(userID, 'config').then(user => {
 		if (!user)
-			throw new ArgumentError(`Unknown userID ${userID}`)
+			throw new DatabaseError(`Unknown userID ${userID}`)
 
 		return user.config
 	})

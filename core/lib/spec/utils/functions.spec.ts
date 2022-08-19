@@ -1,10 +1,9 @@
-import {encode, decode, encrypt, indexOf} from "../../utils/functions";
+import {encode, decode, encrypt, indexOf} from "../../utils";
 
 describe('Functions', function () {
 	const value: string = "value"
 	describe('Encode', function () {
 		it('should encode a value for url encoding consistently', function () {
-
 			expect(encode(value)).toEqual(encode(value))
 		});
 

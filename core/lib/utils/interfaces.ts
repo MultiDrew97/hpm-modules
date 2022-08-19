@@ -4,26 +4,22 @@ import { SameSite, TimerType } from ".";
 /**
  * The base class for any database entry
  */
-export declare interface IDbEntry extends Document {
+export declare interface IDbEntry {
 	/**
 	 * ID of the current database entry
 	 */
-	_id: string;
+	id?: string;
 
 	/**
 	 * Name of site/person
 	 */
 	name: string;
 }
+
 /**
  * Database configuration template
  */
 export declare interface IDbConfig {
-	/**
-	 * Login credentials for database connection
-	 */
-	login: IAuth;
-
 	/**
 	 * The uri to use for the connection
 	 */
@@ -39,20 +35,21 @@ export declare interface IDbConfig {
 	 */
 	options: ConnectOptions;
 }
+
 /**
  * Connection options for a database connection
  * @deprecated Please use the ConnectOptions interface from
  * @see ConnectOptions
  */
 export declare interface IConnectOptions extends ConnectOptions {
-	// TODO: Make this better for database connections
 	useNewUrlParser: boolean;
 	useUnifiedTopology: boolean;
 }
+
 /**
  * The user data for a specific user
  */
-export declare interface IUser extends IDbEntry, IAuth {
+export declare interface IUser extends IDbEntry {
 	/**
 	 * The email address for the user
 	 */
@@ -65,7 +62,13 @@ export declare interface IUser extends IDbEntry, IAuth {
 	 * The settings used for the logged-in user
 	 */
 	config: IUserConfig;
+
+	/**
+	 * The login info for the user
+	 */
+	login: IAuth
 }
+
 /**
  * A password entry for a user
  */
@@ -85,6 +88,7 @@ export declare interface IPassEntry extends IDbEntry {
 	 */
 	passwordHistory: string[];
 }
+
 /**
  * Used for storing cookie configurations
  */
@@ -126,6 +130,7 @@ export declare interface ICookieOptions {
 	 */
 	sameSite?: SameSite;
 }
+
 /**
  * Used for storing credential data
  */
@@ -145,6 +150,7 @@ export declare interface IAuth {
 	 */
 	salt?: string;
 }
+
 /**
  * The configuration to use per user
  */
@@ -154,6 +160,7 @@ export declare interface IUserConfig {
 	 */
 	syncTime?: number;
 }
+
 /**
  * Default behaviour of a dialog box
  */

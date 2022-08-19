@@ -5,8 +5,8 @@
 			"displayStacktrace": "all"
 		}
 	}],
-	"helpers": ["./helpers/**/*[hH]elp.ts"],
-	"spec_dir": "./lib/spec",
-	"spec_files": ["./**/*[sS]pec.ts"],
+	"helpers" : ["helpers/**/*[hH]elp.ts"],
+	"spec_dir" : "lib/spec",
+	"spec_files" : ["**/*[sS]pec.ts"],
 	"random": true
 }
