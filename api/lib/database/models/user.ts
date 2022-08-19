@@ -12,7 +12,7 @@ interface IUserModel extends Model<IUserDoc> {
 	checkPassword(id: string, password: string): Promise<boolean>
 	isUniqueUsername(username: string): Promise<boolean>
 	getSalt(id: string): Promise<string>
-	addPassword(userID: string, entryID: string): void
+	addPassword(userID: string, entryID: string): Promise<IUserDoc>
 	removePassword(userID: string, entryID: string): Promise<boolean>
 	updatePassword(userID: string, newPassword: string): Promise<boolean>
 	getUserConfig(userID: string): Promise<IUserConfig>
@@ -22,17 +22,6 @@ const userSchema: Schema<IUserDoc> = new Schema({
 	name: {
 		type: SchemaTypes.String,
 		default: "John Doe"
-	},
-	username: {
-		type: SchemaTypes.String,
-		unique: true
-	},
-	password: {
-		type: SchemaTypes.String,
-		default: ''
-	},
-	salt: {
-		type: SchemaTypes.String
 	},
 	email: {
 		type: SchemaTypes.String,
@@ -46,6 +35,20 @@ const userSchema: Schema<IUserDoc> = new Schema({
 	config: {
 		type: Object,
 		default: DEFAULT_CONFIG
+	},
+	login: {
+		username: {
+			type: SchemaTypes.String,
+			unique: true
+		},
+		password: {
+			type: SchemaTypes.String,
+			default: ''
+		},
+		salt: {
+			type: SchemaTypes.String,
+			default: (new Types.ObjectId()).toString()
+		},
 	}
 })
 
@@ -53,8 +56,8 @@ userSchema.pre('save', function() {
 	if (!this.isNew)
 		return
 
-	this.salt = (new Types.ObjectId()).toString()
-	this.password = encrypt(this.password, this.salt)
+	// this.login.salt = (new Types.ObjectId()).toString()
+	this.login.password = encrypt(this.login.password, this.login.salt)
 })
 
 userSchema.pre(/.*delete.*/i, function() {
@@ -74,7 +77,7 @@ userSchema.static('updatePassword', function(userID: string, newPassword: string
 		if (!user)
 			throw new DatabaseError(`Unknown userID ${userID}`)
 
-		user.password = encrypt(newPassword, user.salt)
+		user.login.password = encrypt(newPassword, user.login.salt)
 		return user.save().then(_ => {
 			return true
 		}).catch(_ => {
@@ -103,7 +106,7 @@ userSchema.static('checkPassword', async function(id: string, password: string):
 	if (!user)
 		throw new LoginError(`Unknown userID ${id}`)
 
-	if (user.password !== (encrypt(password, user.salt)))
+	if (user.login.password !== (encrypt(password, user.login.salt)))
 		throw new LoginError("Incorrect password")
 
 	return true
@@ -151,7 +154,7 @@ userSchema.static('getSalt', async function(id: any): Promise<string> {
 		if (!user)
 			throw new DatabaseError(`Unknown userID ${id}`)
 
-		return user.password
+		return user.login.password
 	})
 })
 
