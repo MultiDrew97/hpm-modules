@@ -63,21 +63,12 @@ entrySchema.static('addEntry', function(userID: string, newEntry: IPassEntry): P
 })
 
 entrySchema.method('updatePassword', function (newPassword: string): Promise<boolean> {
-	/*
-		TODO: Test this to make sure it works properly
-	 */
-	// Add the old password to the list of previous passwords, then save the new one
-	console.debug(this)
-
-	console.log(this.passwordHistory.length)
 	if (this.passwordHistory.length >= 5)
 		this.passwordHistory.shift()
 
 	this.passwordHistory.push(this.login.password)
 
 	this.login.password = newPassword
-
-	console.debug(this)
 
 	return this.save().then(() => {
 		return true

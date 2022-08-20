@@ -1,21 +1,21 @@
-import {connect, disconnect, ConnectOptions, Types} from "mongoose"
+import {connect, disconnect, Types} from "mongoose"
 import {User, PasswordEntry} from "../database";
-import {IPassEntry} from "@herbivore/core/utils/interfaces";
+import {IDbConfig, IPassEntry} from "@herbivore/core/utils/interfaces";
 import {LoginError} from "@herbivore/core/utils/errors";
-import {IPassEntryDoc} from "../database/models/password";
 
-const options: ConnectOptions = {
-	auth: {
-		username: "arandlemiller97",
-		password: "JasmineLove2697"
+const dbConfig: IDbConfig = {
+	options: {
+		auth: {
+			username: "arandlemiller97",
+			password: "JasmineLove2697"
+		},
+		retryWrites: true,
+		w: "majority",
+		dbName: "HPM-Test"
 	},
-	retryWrites: true,
-	w: "majority",
-	appName: "HPM"
+	desiredPage: "HPM-Test",
+	uri: `mongodb+srv://herbivores-password-man.wci8d.mongodb.net/`
 }
-const desiredPage: string = "HPM-Test"
-
-const uri = `mongodb+srv://herbivores-password-man.wci8d.mongodb.net/${desiredPage}`
 
 const validUser = {
 	id: "6260a5690814821a97aa218d",
@@ -30,7 +30,7 @@ const invalidUser = {
 
 describe('Database User Schema', function () {
 	beforeAll(async () => {
-		await connect(uri, options)
+		await connect(<string>dbConfig.uri, dbConfig.options)
 	})
 	afterAll(async () => {
 		await disconnect()
@@ -74,7 +74,7 @@ describe('Database Passwords Schema', function () {
 	const userID: string = "6260a5690814821a97aa218d"
 
 	beforeAll(async () => {
-		await connect(uri, options)
+		await connect(<string>dbConfig.uri, dbConfig.options)
 	})
 
 	afterAll(async () => {
@@ -99,7 +99,7 @@ describe('Database Passwords Schema', function () {
 	});
 
 	it('should properly update the password for the entry', async function () {
-		let testEntryDoc: IPassEntryDoc = await PasswordEntry.create(testEntry)
+		let testEntryDoc = await PasswordEntry.create(testEntry)
 		const finalPassword = [ 'test5', 'test6', 'test7', 'test8', 'test9' ]
 
 		for (let i = 1; i <= 10; i++) {

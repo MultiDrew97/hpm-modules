@@ -63,8 +63,5 @@
     "hpm",
     "password",
     "password manager"
-  ],
-  "files": [
-    "../dist/"
   ]
 }
