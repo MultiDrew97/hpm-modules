@@ -42,5 +42,9 @@ describe('General Utility Functions', function () {
 		expect(() => {
 			validateQueryID(...invalidIDs)
 		}).toThrowError(ArgumentError, "'123443' and '123456' are not valid IDs")
+
+		expect(() => {
+			validateQueryID(undefined, undefined)
+		}).not.toThrowError()
 	});
 });

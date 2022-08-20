@@ -22,7 +22,7 @@ export function validateHeaders(headers: IncomingHttpHeaders, authRegex: RegExp,
 export function validateQueryID(...ids: any) {
 	let invalidIDs = []
 	for (let id of ids) {
-		if (!Types.ObjectId.isValid(id))
+		if (id && !Types.ObjectId.isValid(id))
 			invalidIDs.push(id)
 	}
 
