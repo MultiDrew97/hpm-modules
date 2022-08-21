@@ -64,7 +64,7 @@ describe('Database User Schema', function () {
 	});
 });
 
-describe('Database Passwords Schema', function () {
+fdescribe('Database Passwords Schema', function () {
 	const validEntry = {
 		id: "6278838c6ab5c4f5ebbf0a11"
 	}
@@ -110,4 +110,9 @@ describe('Database Passwords Schema', function () {
 
 		await PasswordEntry.findByIdAndDelete(testEntryDoc.id)
 	});
+
+	fit('should verify usernames', async function() {
+		await expectAsync(User.isUniqueUsername('test')).withContext("username: username").toBeResolvedTo(false)
+		await expectAsync(User.isUniqueUsername('test2')).withContext("username: test2").toBeResolvedTo(true)
+	})
 });

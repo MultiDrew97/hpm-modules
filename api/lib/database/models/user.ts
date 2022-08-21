@@ -25,7 +25,8 @@ const userSchema: Schema<IUserDoc> = new Schema({
 	},
 	email: {
 		type: SchemaTypes.String,
-		unique: true
+		unique: true,
+		required: true
 	},
 	entries: [{
 		type: SchemaTypes.ObjectId,
@@ -39,11 +40,12 @@ const userSchema: Schema<IUserDoc> = new Schema({
 	login: {
 		username: {
 			type: SchemaTypes.String,
-			unique: true
+			unique: true,
+			required: true
 		},
 		password: {
 			type: SchemaTypes.String,
-			default: ''
+			required: true
 		},
 		salt: {
 			type: SchemaTypes.String,
@@ -107,7 +109,6 @@ userSchema.static('checkPassword', async function(id: string, password: string):
 	if (!user)
 		throw new LoginError(`Unknown userID ${id}`)
 
-
 	if (user.login.password !== (encrypt(password, user.login.salt)))
 		throw new LoginError("Incorrect password")
 
@@ -117,7 +118,7 @@ userSchema.static('checkPassword', async function(id: string, password: string):
 userSchema.static('addPassword', function(userID: string, entryID: string): Promise<IUserDoc> {
 	return User.findById(userID).then((user: IUserDoc | null) => {
 		if (!user)
-			throw new ArgumentError(`Unknown user with userID ${userID}`)
+			throw new ArgumentError(`Unknown userID ${userID}`)
 
 		user.entries.push(entryID)
 		return user.save()
@@ -128,7 +129,7 @@ userSchema.static('removePassword', function(userID: string, entryID: string): P
 	let removed: (IPassEntry | string)[]
 	return User.findById(userID).then((user: IUserDoc | null) => {
 		if (!user)
-			throw new ArgumentError(`Unknown user with userID ${userID}`)
+			throw new ArgumentError(`Unknown userID ${userID}`)
 
 		let index = indexOf(user.entries, entryID, 'id')
 
@@ -171,7 +172,7 @@ userSchema.static('getUserConfig', async function(userID: string): Promise<IUser
 
 userSchema.static('isUniqueUsername', async function(username: string): Promise<boolean> {
 	// MAYBE: find vs. findOne
-	return await User.find({username: username}).then(user => {
+	return await User.find({"login.username": username}).then(user => {
 		return user.length === 0
 	})
 })

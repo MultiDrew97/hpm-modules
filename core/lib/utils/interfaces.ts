@@ -1,4 +1,4 @@
-import { ConnectOptions, Document } from "mongoose";
+import { ConnectOptions } from "mongoose";
 import { SameSite, TimerType } from ".";
 
 /**
@@ -191,6 +191,9 @@ export declare interface ITimerConfig {
 
 	/**
 	 * Any arguments that are to be passed to the function
+	 *
+	 * Should be passed like:
+	 * 		[thisArg, [funcArgs]]
 	 */
 	args: any[]
 }

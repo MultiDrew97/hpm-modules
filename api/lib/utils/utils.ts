@@ -13,10 +13,10 @@ export function validateHeaders(headers: IncomingHttpHeaders, authRegex: RegExp,
 	let auth: IAuth = getAuth(headers.authorization)
 
 	if (auth.username !== apiAuth.username)
-		throw new AuthorizationError("Invalid username")
+		throw new AuthorizationError("Invalid API username")
 
 	if (auth.password !== apiAuth.password)
-		throw new AuthorizationError("Incorrect Password")
+		throw new AuthorizationError("Incorrect API Password")
 }
 
 export function validateQueryID(...ids: any) {

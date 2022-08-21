@@ -67,7 +67,7 @@ export class Timer {
 		switch(this.TimerConfig.type) {
 			case "interval":
 				this._timerID = setInterval((...args: any[]) => {
-					(<Function>this.TimerConfig?.fn).apply(args[0], args)
+					(<Function>this.TimerConfig?.fn).apply(args.length > 1 ? args[0] : undefined, args[1])
 				}, this.TimerConfig.time, this.TimerConfig.args)
 				this._running = true
 				break
