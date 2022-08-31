@@ -9,36 +9,34 @@ export const TAGS = {
 }
 
 export function log(message?: any, date?: boolean, ...data: any[]) {
-	const logMessage: string = `${HEADING}${TAGS.log} ${date ? getDate() : ""} ${message}`
-	console.log(`%s`, logMessage, ...data)
+	console.log(`%s`, prepMessage(TAGS.log, message, date), ...data)
 }
 
-export function info(date?: boolean, message?: any, ...data: any[]) {
-	const logMessage = `${HEADING}${TAGS.log} ${date ? getDate() : ""} ${message}`
-	console.info(`%s`, logMessage, ...data)
+export function info(message?: any, date?: boolean, ...data: any[]) {
+	console.info(`%s`, prepMessage(TAGS.info, message, date), ...data)
 }
 
-export function warn(date?: boolean, message?: any, ...data: any[]) {
-	const logMessage = `${HEADING}${TAGS.log} ${date ? getDate() : ""} ${message}`
-	console.warn(`%s`, logMessage, ...data)
+export function warn(message?: any, date?: boolean, ...data: any[]) {
+	console.warn(`%s`, prepMessage(TAGS.warn, message, date), ...data)
 }
 
-export function error(date?: boolean, message?: any, ...data: any[]) {
-	const logMessage = `${HEADING}${TAGS.log} ${date ? getDate() : ""} ${message}`
-	console.error(`%s`, logMessage, ...data)
+export function error(message?: any, date?: boolean, ...data: any[]) {
+	console.error(`%s`, prepMessage(TAGS.error, message, date), ...data)
 }
 
-export function debug(date?: boolean, message?: any, ...data: any[]) {
-	const logMessage = `${HEADING}${TAGS.log} ${date ? getDate() : ""} ${message}`
-	console.debug(`%s`, logMessage, ...data)
+export function debug(message?: any, date?: boolean, ...data: any[]) {
+	console.debug(`%s`, prepMessage(TAGS.debug, message, date), ...data)
 }
 
-export function trace(date?: boolean, message?: any, ...data: any[]) {
-	const logMessage = `${HEADING}${TAGS.log} ${date ? getDate() : "|"} ${message}`
-	console.trace(`%s`, logMessage, ...data)
+export function trace(message?: any, date?: boolean, ...data: any[]) {
+	console.trace(`%s`, prepMessage(TAGS.trace, message, date), ...data)
 }
 
 function getDate() {
 	let date = (new Date(Date.now()))
-	return `${date.toDateString()}`
+	return `(${date.toDateString()}) `
+}
+
+function prepMessage(tag: string, message: string, date?: boolean) {
+	return `${date ? getDate() : ""}${HEADING}${tag} ${message}`
 }
