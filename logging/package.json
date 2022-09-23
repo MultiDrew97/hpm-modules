@@ -1,7 +1,7 @@
 {
   "name": "@herbivore/logger",
-  "version": "0.1.0",
-  "description": "Herbivore Password Manager - Logger",
+  "version": "0.2.0",
+  "description": "A module to try to help simplify and add scalability to my personal projects.",
   "author": "herbivore",
   "license": "MIT",
   "main": "index.js",
