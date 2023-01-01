@@ -1,6 +1,6 @@
 {
   "name": "@herbivore/logger",
-  "version": "0.2.0",
+  "version": "0.2.2",
   "description": "A module to try to help simplify and add scalability to my personal projects.",
   "author": "herbivore",
   "license": "MIT",

@@ -16,12 +16,15 @@ export const TAGS = {
 /**
  * Creates a logger object to handle logging to any console
  */
-export class Logger {
+export default class Logger {
 	readonly desiredHeading: string
 	readonly showDate: boolean
 
 	constructor(heading?: string, date?: boolean) {
-		this.desiredHeading = heading ?? DEFAULT_HEADING
+		this.desiredHeading = (heading && !/\[.+\]/i.test(heading)) ?
+			 `[${heading}]` :
+			this.desiredHeading = heading ?? DEFAULT_HEADING
+
 		this.showDate = date ?? DEFAULT_DATE
 	}
 

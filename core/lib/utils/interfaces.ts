@@ -1,4 +1,4 @@
-import { ConnectOptions, Document } from "mongoose";
+import { ConnectOptions } from "mongoose";
 import { SameSite, TimerType } from ".";
 
 /**
@@ -87,6 +87,11 @@ export declare interface IPassEntry extends IDbEntry {
 	 * Previous password history when updating passwords
 	 */
 	passwordHistory: string[];
+
+	/**
+	 * The key to use for TOTP generation
+	 */
+	totpKey?: string
 }
 
 /**
@@ -193,4 +198,29 @@ export declare interface ITimerConfig {
 	 * Any arguments that are to be passed to the function
 	 */
 	args: any[]
+}
+
+/**
+ * The config for generating a TOTP code
+ */
+export declare interface ITotpConfig {
+	/**
+	 * Number of digits in TOTP
+	 */
+	digits?: number,
+
+	/**
+	 * Amount of time in seconds the TOTP is active
+	 */
+	period?: number,
+
+	/**
+	 * The algorithm to use for the TOTP generation
+	 */
+	algorithm?: string,
+
+	/**
+	 * The timestamp in ms to generate the TOTP for
+	 */
+	timestamp?: number
 }

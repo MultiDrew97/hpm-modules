@@ -1,6 +1,6 @@
 {
   "name": "@herbivore/api",
-  "version": "1.2.1",
+  "version": "1.2.7",
   "description": "Herbivore Password Manager - API",
   "author": "herbivore",
   "license": "MIT",
@@ -11,8 +11,8 @@
     "build": "tsc",
     "build:test": "tsc -p lib/spec/tsconfig.spec.json",
     "test": "NODE_OPTIONS=--loader=ts-node/esm jasmine --config=./lib/spec/jasmine.json",
-    "publish:prod": "cp package.json dist && cd dist && npm publish --access public",
-    "publish:dry": "npm publish --access public --dry-run"
+    "publish:prod": "cp package.json ./dist && cd dist && npm publish --access public",
+    "publish:dry": "cp package.json ./dist && cd dist && npm publish --access public --dry-run"
   },
   "engines": {
     "node": "^14.15.0 || >=16.10.0"
@@ -64,7 +64,9 @@
     "password",
     "password manager"
   ],
-  "files": [
-    "../dist/"
-  ]
+  "repository" : {
+    "url" : "https://github.com/MultiDrew97/hpm-modules",
+    "directory" : "api",
+    "type" : "git"
+  }
 }
