@@ -4,7 +4,7 @@ import {encrypt, indexOf, DEFAULT_CONFIG} from "@herbivore/core/utils";
 import {ArgumentError, DatabaseError, LoginError} from "@herbivore/core/utils/errors"
 import {PasswordEntry} from "./password";
 
-export interface IUserDoc extends IUser, Document {
+interface IUserDoc extends IUser, Document {
 }
 
 interface IUserModel extends Model<IUserDoc> {
@@ -25,7 +25,8 @@ const userSchema: Schema<IUserDoc> = new Schema({
 	},
 	email: {
 		type: SchemaTypes.String,
-		unique: true
+		unique: true,
+		required: true
 	},
 	entries: [{
 		type: SchemaTypes.ObjectId,
@@ -39,11 +40,12 @@ const userSchema: Schema<IUserDoc> = new Schema({
 	login: {
 		username: {
 			type: SchemaTypes.String,
-			unique: true
+			unique: true,
+			required: true
 		},
 		password: {
 			type: SchemaTypes.String,
-			default: ''
+			required: true
 		},
 		salt: {
 			type: SchemaTypes.String,
@@ -68,9 +70,9 @@ userSchema.pre(/.*delete.*/i, function() {
 	}
 })
 
-userSchema.pre(/find.*/, function() {
+/*userSchema.pre(/find.*!/, function() {
 	this.populate('entries')
-})
+})*/
 
 userSchema.static('updatePassword', function(userID: string, newPassword: string) {
 	return User.findById(userID).then(user => {
@@ -88,20 +90,21 @@ userSchema.static('updatePassword', function(userID: string, newPassword: string
 
 userSchema.static('login', async function(auth: IAuth): Promise<IUserDoc> {
 	// TODO: Determine what I actually need from the login
-	let user = await this.findOne({username: auth.username}, 'id password salt')
+	let user = await User.findOne({username: auth.username}, "id login")
 
 	if (!user)
 		throw new LoginError("Unknown username")
 
-	if (user.password !== (encrypt(auth.password, user.salt)))
+	if (user.login.password !== (encrypt(auth.password, user.login.salt)))
 		throw new LoginError("Incorrect password")
 
+	// MAYBE: Do I need the login info? Could I return the userID instead?
 	return user
 })
 
 userSchema.static('checkPassword', async function(id: string, password: string): Promise<boolean> {
 	// TODO: Determine what I actually need from the login
-	let user: IUser | null = await User.findById(id, 'id password salt')
+	let user = await User.findById(id, 'id login')
 
 	if (!user)
 		throw new LoginError(`Unknown userID ${id}`)
@@ -115,7 +118,7 @@ userSchema.static('checkPassword', async function(id: string, password: string):
 userSchema.static('addPassword', function(userID: string, entryID: string): Promise<IUserDoc> {
 	return User.findById(userID).then((user: IUserDoc | null) => {
 		if (!user)
-			throw new ArgumentError(`Unknown user with userID ${userID}`)
+			throw new ArgumentError(`Unknown userID ${userID}`)
 
 		user.entries.push(entryID)
 		return user.save()
@@ -126,7 +129,7 @@ userSchema.static('removePassword', function(userID: string, entryID: string): P
 	let removed: (IPassEntry | string)[]
 	return User.findById(userID).then((user: IUserDoc | null) => {
 		if (!user)
-			throw new ArgumentError(`Unknown user with userID ${userID}`)
+			throw new ArgumentError(`Unknown userID ${userID}`)
 
 		let index = indexOf(user.entries, entryID, 'id')
 
@@ -168,7 +171,8 @@ userSchema.static('getUserConfig', async function(userID: string): Promise<IUser
 })
 
 userSchema.static('isUniqueUsername', async function(username: string): Promise<boolean> {
-	return await User.find({username: username}).then(user => {
+	// MAYBE: find vs. findOne
+	return await User.find({"login.username": username}).then(user => {
 		return user.length === 0
 	})
 })

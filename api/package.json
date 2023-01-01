@@ -1,6 +1,6 @@
 {
   "name": "@herbivore/api",
-  "version": "1.2.1",
+  "version": "1.2.5",
   "description": "Herbivore Password Manager - API",
   "author": "herbivore",
   "license": "MIT",
@@ -63,8 +63,5 @@
     "hpm",
     "password",
     "password manager"
-  ],
-  "files": [
-    "../dist/"
   ]
 }

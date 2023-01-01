@@ -13,16 +13,26 @@ export function validateHeaders(headers: IncomingHttpHeaders, authRegex: RegExp,
 	let auth: IAuth = getAuth(headers.authorization)
 
 	if (auth.username !== apiAuth.username)
-		throw new AuthorizationError("Invalid username")
+		throw new AuthorizationError("Invalid API username")
 
 	if (auth.password !== apiAuth.password)
-		throw new AuthorizationError("Incorrect Password")
+		throw new AuthorizationError("Incorrect API Password")
 }
 
 export function validateQueryID(...ids: any) {
+	let invalidIDs = []
 	for (let id of ids) {
 		if (id && !Types.ObjectId.isValid(id))
-			throw new ArgumentError(`ID ${id} is not a valid ObjectID`)
+			invalidIDs.push(id)
+	}
+
+	if (invalidIDs.length > 0) {
+		let idStrings = invalidIDs
+			.map((value, index, array) => index > array.length - 1 ? `'${value}'` : `'${value}'`)
+			.join(invalidIDs.length === 2 ? " and " : ", ")
+
+		let tail = invalidIDs.length > 1 ? 'are not valid IDs' : 'is not a valid ID'
+		throw new ArgumentError(`${idStrings} ${tail}`)
 	}
 }
 

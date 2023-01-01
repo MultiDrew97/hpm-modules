@@ -17,7 +17,7 @@ let validHeader: IncomingHttpHeaders = {
 }
 let invalidHeader: IncomingHttpHeaders = {}
 let validIDs = [new Types.ObjectId(), new Types.ObjectId(), new Types.ObjectId()]
-let invalidIDs = ["123443", 123]
+let invalidIDs = [123, "123443", "123456"]
 
 describe('General Utility Functions', function () {
 	it('should correctly decode and parse the auth details from the header', function () {
@@ -41,6 +41,10 @@ describe('General Utility Functions', function () {
 
 		expect(() => {
 			validateQueryID(...invalidIDs)
-		}).toThrowError(ArgumentError)
+		}).toThrowError(ArgumentError, "'123443' and '123456' are not valid IDs")
+
+		expect(() => {
+			validateQueryID(undefined, undefined)
+		}).not.toThrowError()
 	});
 });
