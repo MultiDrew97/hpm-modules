@@ -21,15 +21,14 @@ export function validateHeaders(headers: IncomingHttpHeaders, authRegex: RegExp,
 
 export function validateQueryID(...ids: any) {
 	let invalidIDs = []
-	for (let id of ids) {
-		if (id && !Types.ObjectId.isValid(id))
-			invalidIDs.push(id)
+	for (let id of ids.filter((item: any) => !!item)) {
+		if (!!id && !Types.ObjectId.isValid(id)) invalidIDs.push(id)
 	}
 
 	if (invalidIDs.length > 0) {
 		let idStrings = invalidIDs
-			.map((value, index, array) => index > array.length - 1 ? `'${value}'` : `'${value}'`)
-			.join(invalidIDs.length === 2 ? " and " : ", ")
+			.map((value, index, array) => index < array.length - 2 ? `'${value}', ` : `and '${value}'`)
+			// .join(invalidIDs.length === 2 ? " and " : ", ")
 
 		let tail = invalidIDs.length > 1 ? 'are not valid IDs' : 'is not a valid ID'
 		throw new ArgumentError(`${idStrings} ${tail}`)
@@ -44,3 +43,5 @@ export function getAuth(auth: string): IAuth {
 		password: decodedAuth[1]
 	}
 }
+
+

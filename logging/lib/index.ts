@@ -21,8 +21,7 @@ export default class Logger {
 	readonly showDate: boolean
 
 	constructor(heading?: string, date?: boolean) {
-		this.desiredHeading = (heading && !/\[.+\]/i.test(heading)) ?
-			 `[${heading}]` :
+		this.desiredHeading = (heading && !/\[.+\]/i.test(heading)) ? `[${heading}]` :
 			this.desiredHeading = heading ?? DEFAULT_HEADING
 
 		this.showDate = date ?? DEFAULT_DATE
@@ -34,7 +33,7 @@ export default class Logger {
 	 * @param data The data to be printed
 	 */
 	log(message?: any, ...data: any[]): void {
-		console.log(`%s`, this.prepMessage(TAGS.log, message), ...data)
+		console.log(`${this.prepHeader(TAGS.log)}`, message, ...data)
 	}
 
 	/**
@@ -43,7 +42,7 @@ export default class Logger {
 	 * @param data The data to be printed
 	 */
 	info(message?: any, ...data: any[]): void {
-		console.info(`%s`, this.prepMessage(TAGS.info, message), ...data)
+		console.info(`${this.prepHeader(TAGS.info)}`, message, ...data)
 	}
 
 	/**
@@ -52,7 +51,7 @@ export default class Logger {
 	 * @param data The data to be printed
 	 */
 	warn(message?: any, ...data: any[]): void {
-		console.warn(`%s`, this.prepMessage(TAGS.warn, message), ...data)
+		console.warn(`${this.prepHeader(TAGS.warn)}`, message, ...data)
 	}
 
 	/**
@@ -61,7 +60,7 @@ export default class Logger {
 	 * @param data The data to be printed
 	 */
 	error(message?: any, ...data: any[]): void {
-		console.error(`%s`, this.prepMessage(TAGS.error, message), ...data)
+		console.error(`${this.prepHeader(TAGS.error)}`, message, ...data)
 	}
 
 	/**
@@ -70,7 +69,7 @@ export default class Logger {
 	 * @param data The data to be printed
 	 */
 	debug(message?: any, ...data: any[]): void {
-		console.debug(`%s`, this.prepMessage(TAGS.debug, message), ...data)
+		console.debug(`${this.prepHeader(TAGS.debug)}`, message, ...data)
 	}
 
 	/**
@@ -79,7 +78,7 @@ export default class Logger {
 	 * @param data The data to be printed
 	 */
 	trace(message?: any, ...data: any[]): void {
-		console.trace(`%s`, this.prepMessage(TAGS.trace, message), ...data)
+		console.trace(`${this.prepHeader(TAGS.trace)}`, message, ...data)
 	}
 
 	/**
@@ -87,18 +86,17 @@ export default class Logger {
 	 * @private
 	 */
 	private getDate(): string {
-		let date = (new Date(Date.now()))
-		return `(${date.toDateString()}) `
+		let date = new Date(Date.now())
+		return `(${date.toLocaleDateString()} - ${date.toLocaleTimeString()}) `
 	}
 
 	/**
 	 * Preps the message to be print, gathering the date and formatting the output using the other aspects
 	 * @param tag The tag to use for the log
-	 * @param message The message to be printed
 	 * @private
 	 */
-	private prepMessage(tag: string, message: string): string {
-		return `${this.showDate ? this.getDate() : ""}${this.desiredHeading}${tag} ${message}`
+	private prepHeader(tag: string): string {
+		return `${this.showDate ? this.getDate() : ""}${this.desiredHeading}${tag}`
 	}
 }
 

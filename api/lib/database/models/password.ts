@@ -2,42 +2,71 @@ import { IPassEntry } from "@herbivore/core/utils/interfaces";
 import {Model, model, Schema, SchemaTypes, Document} from "mongoose";
 import {User} from "./user";
 
+export const CollectionName = {
+	name: 'Entry',
+	collection: 'Entries',
+}
+
 export interface IPassEntryDoc extends IPassEntry, Document {
-	updatePassword(newPassword: string): Promise<boolean>
+	/**
+	 * Update the password stored for the entry
+	 * @param newPassword The new password to update to
+	 */
+	updatePassword(newPassword: string): Promise<any>
+
+	/**
+	 * Update the TOTP key for the specified entry
+	 * @param totpKey The key to update to
+	 */
+	updateTotp(totpKey: string): Promise<any>
 }
 
 interface IPassEntryModel extends Model<IPassEntryDoc> {
+	/**
+	 * Create a new password entry and add to user's list
+	 * @param userID ID of user to add to
+	 * @param newEntry New entry to add
+	 */
 	addEntry(userID: string, newEntry: IPassEntry): Promise<boolean>
 }
 
 const entrySchema: Schema<IPassEntryDoc> = new Schema({
 	name: {
 		type: SchemaTypes.String,
-		default: ""
+		default: '',
 	},
-	sites: [{
-		type: SchemaTypes.String,
-		default: ""
-	}],
+	sites: [
+		{
+			type: SchemaTypes.String,
+			default: '',
+		},
+	],
 	login: {
 		username: {
 			type: SchemaTypes.String,
-			default: ""
+			default: '',
 		},
 		password: {
 			type: SchemaTypes.String,
-			default: ""
+			default: '',
 		},
 		salt: {
 			type: SchemaTypes.String,
-			default: ""
-		}
+			default: '',
+		},
 	},
-	passwordHistory: [{
+	passwordHistory: [
+		{
+			type: SchemaTypes.String,
+			alias: 'history',
+			default: '',
+		},
+	],
+	totpKey: {
 		type: SchemaTypes.String,
-		alias: "history",
-		default: ""
-	}]
+		alias: 'key',
+		default: '',
+	},
 })
 
 /*entrySchema.pre('save', function() {
@@ -50,35 +79,51 @@ const entrySchema: Schema<IPassEntryDoc> = new Schema({
 	console.debug(this.login.password)
 })*/
 
-entrySchema.static('addEntry', function(userID: string, newEntry: IPassEntry): Promise<boolean> {
-	return PasswordEntry.create(newEntry).then(password => {
-		return User.addPassword(userID, password.id).then(_ => {
-			return true
-		}).catch(_ => {
-			return false
-		})
-	}).catch(_ => {
-		return false
-	})
-})
+entrySchema.static(
+	'addEntry',
+	function (userID: string, newEntry: IPassEntry): Promise<any> {
+		return PassEntry.create(newEntry)
+			.then((password) => {
+				return User.addEntry(userID, password.id!)
+			})
+			.catch((reason) => {
+				return Promise.reject(reason)
+			})
+	}
+)
 
-entrySchema.method('updatePassword', function (newPassword: string): Promise<boolean> {
-	if (this.passwordHistory.length >= 5)
-		this.passwordHistory.shift()
+entrySchema.method(
+	'updatePassword',
+	function (newPassword: string): Promise<any> {
+		if (this.passwordHistory.length >= 5) this.passwordHistory.shift()
 
-	this.passwordHistory.push(this.login.password)
+		this.passwordHistory.push(this.login.password)
 
-	this.login.password = newPassword
+		// TODO: Is this encrypted before getting here?
+		this.login.password = newPassword
 
-	return this.save().then(() => {
-		return true
-	}).catch(() => {
-		return false
-	})
+		return this.save()
+	}
+)
+
+entrySchema.method('updateTotp', function (totpKey: string): Promise<any> {
+	this.totpKey = totpKey
+	return this.save()
 })
 
 /*function length(arr: (string | IPasswordEntryDoc)[]) {
 	return arr.length <= 5
 }*/
 
-export const PasswordEntry = model<IPassEntryDoc, IPassEntryModel>("PasswordEntry", entrySchema, "PasswordEntries")
+/**
+ * Password model
+ */
+export const PassEntry = model<IPassEntryDoc, IPassEntryModel>(
+	CollectionName.name,
+	entrySchema,
+	CollectionName.collection
+)
+
+
+
+

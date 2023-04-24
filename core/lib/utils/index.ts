@@ -4,4 +4,6 @@ export * from "./constants";
 export * from "./functions";
 export * from "./errors";
 export * from "./interfaces";
+export * from "./semaphore";
+
 export type SameSite = "Lax" | "Strict" | "None"

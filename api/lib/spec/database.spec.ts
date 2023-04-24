@@ -1,5 +1,5 @@
 import {connect, disconnect, Types} from "mongoose"
-import {User, PasswordEntry} from "../database";
+import {User, PassEntry} from "../database";
 import {IDbConfig, IPassEntry} from "@herbivore/core/utils/interfaces";
 import {LoginError} from "@herbivore/core/utils/errors";
 
@@ -81,7 +81,7 @@ fdescribe('Database Passwords Schema', function () {
 		await disconnect()
 	})
 
-	let testEntry: IPassEntry = {
+	let testEntry = {
 		name: "Test",
 		login: {
 			username: "test",
@@ -93,13 +93,13 @@ fdescribe('Database Passwords Schema', function () {
 	}
 
 	it('should properly retrieve password entries', async function () {
-		await expectAsync(PasswordEntry.find()).not.toBeRejected()
-		await expectAsync(PasswordEntry.findById(invalidEntry.id)).toBeResolvedTo(null)
-		await expectAsync(PasswordEntry.findById(validEntry.id)).not.toBeResolvedTo(null)
+		await expectAsync(PassEntry.find()).not.toBeRejected()
+		await expectAsync(PassEntry.findById(invalidEntry.id)).toBeResolvedTo(null)
+		await expectAsync(PassEntry.findById(validEntry.id)).not.toBeResolvedTo(null)
 	});
 
 	it('should properly update the password for the entry', async function () {
-		let testEntryDoc = await PasswordEntry.create(testEntry)
+		let testEntryDoc = await PassEntry.create(testEntry)
 		const finalPassword = [ 'test5', 'test6', 'test7', 'test8', 'test9' ]
 
 		for (let i = 1; i <= 10; i++) {
@@ -108,7 +108,7 @@ fdescribe('Database Passwords Schema', function () {
 
 		expect(testEntryDoc.passwordHistory).toEqual(finalPassword)
 
-		await PasswordEntry.findByIdAndDelete(testEntryDoc.id)
+		await PassEntry.findByIdAndDelete(testEntryDoc.id)
 	});
 
 	fit('should verify usernames', async function() {

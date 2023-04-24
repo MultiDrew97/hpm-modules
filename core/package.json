@@ -1,6 +1,6 @@
 {
   "name": "@herbivore/core",
-  "version": "2.1.0",
+  "version": "3.0.0",
   "description": "Herbivore Password Manager - Core",
   "author": "herbivore",
   "license": "MIT",
@@ -20,7 +20,9 @@
   "dependencies": {
     "ts-md5": "^1.2.11",
     "mongoose": "^6.5.0",
-    "tslib": "^2.4.0"
+    "tslib": "^2.4.0",
+    "os": "^0.1.2",
+    "os-browserify": "~0.3.0"
   },
   "devDependencies": {
     "@skypack/package-check": "^0.2.2",

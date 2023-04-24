@@ -27,7 +27,10 @@ export class Timer {
 	 * @constructor
 	 */
 	get TimerName() {
-		return this.TimerConfig ? this.TimerConfig.name : undefined
+		if (!this.TimerConfig)
+			throw new TimerError("No config present")
+
+		return this.TimerConfig.name
 	}
 
 	get TimerConfig(): ITimerConfig | undefined {
@@ -62,25 +65,23 @@ export class Timer {
 			throw new TimerError('No config present')
 
 		if (!this.TimerConfig.fn)
-			throw new TimerError('No function present in config')
+			throw new TimerError('No function present in config to start')
+
+		if (this.isRunning)
+			throw new TimerError("Timer has already been started")
 
 		switch(this.TimerConfig.type) {
 			case "interval":
-				this._timerID = setInterval((...args: any[]) => {
-					(<Function>this.TimerConfig?.fn).apply(args.length > 1 ? args[0] : undefined, args[1])
-				}, this.TimerConfig.time, this.TimerConfig.args)
-				this._running = true
+				this._timerID = setInterval((<Function>this.TimerConfig?.fn), this.TimerConfig.time, ...this.TimerConfig.args)
 				break
 			case "timeout":
 				this._timerID = setTimeout(this.TimerConfig.fn, this.TimerConfig.time, this.TimerConfig.args)
-				this._running = true
 				break
-			/*case "immediate":
-				this._timerID = setImmediate(<(...args: any[]) => void>this._config.fn!, this._config.args)
-				break*/
 			default:
 				throw new TimerError(`${this.TimerConfig.type} is not a valid timer type.`)
 		}
+
+		this._running = true
 	}
 
 	/**
@@ -88,16 +89,14 @@ export class Timer {
 	 */
 	stop(): void {
 		if (!this._timerID || !this.TimerConfig || !this.isRunning)
-			throw new TimerError("Timer not started")
+			throw new TimerError("No timer was started")
 
 		switch (this.TimerConfig.type) {
 			case "interval":
 				clearInterval(<number>this._timerID)
-				this._running = false
 				break
 			case "timeout":
 				clearTimeout(<number>this._timerID)
-				this._running = false
 				break
 			/*case "immediate":
 				clearImmediate(<NodeJS.Immediate>this._timerID)
@@ -105,6 +104,8 @@ export class Timer {
 			default:
 				throw new TimerError(`${this.TimerConfig.type} is not a valid timer type.`)
 		}
+
+		this._running = false
 	}
 
 	save(): void {
@@ -140,6 +141,6 @@ export class Timer {
 			this.TimerConfig.fn = Function(<string>this.TimerConfig.fn)
 		}
 
-		this.TimerConfig?.fn()
+		this.start()
 	}
 }

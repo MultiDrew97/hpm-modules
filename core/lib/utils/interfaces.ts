@@ -1,19 +1,20 @@
-import { ConnectOptions } from "mongoose";
-import { SameSite, TimerType } from ".";
+import { ConnectOptions, Document } from 'mongoose'
+import { TimerType } from './timer'
+import { SameSite } from '.'
 
 /**
  * The base class for any database entry
  */
-export declare interface IDbEntry {
+export declare interface IDbEntry extends Document {
 	/**
 	 * ID of the current database entry
 	 */
-	id?: string;
+	// _id?: any
 
 	/**
-	 * Name of site/person
+	 * Name of entry/person
 	 */
-	name: string;
+	name: string
 }
 
 /**
@@ -28,12 +29,12 @@ export declare interface IDbConfig {
 	/**
 	 * The desired page to connect to
 	 */
-	desiredPage: string;
+	desiredPage: string
 
 	/**
 	 * Options for the connection
 	 */
-	options: ConnectOptions;
+	options: ConnectOptions
 }
 
 /**
@@ -42,8 +43,8 @@ export declare interface IDbConfig {
  * @see ConnectOptions
  */
 export declare interface IConnectOptions extends ConnectOptions {
-	useNewUrlParser: boolean;
-	useUnifiedTopology: boolean;
+	useNewUrlParser: boolean
+	useUnifiedTopology: boolean
 }
 
 /**
@@ -53,15 +54,15 @@ export declare interface IUser extends IDbEntry {
 	/**
 	 * The email address for the user
 	 */
-	email: string;
+	email: string
 	/**
 	 * IDs/Password entries for the given user
 	 */
-	entries: (IPassEntry | string)[];
+	entries: (IPassEntry | string)[]
 	/**
 	 * The settings used for the logged-in user
 	 */
-	config: IUserConfig;
+	config: IUserConfig
 
 	/**
 	 * The login info for the user
@@ -76,17 +77,17 @@ export declare interface IPassEntry extends IDbEntry {
 	/**
 	 * The sites that the password are used for
 	 */
-	sites: string[];
+	sites: string[]
 
 	/**
 	 * The login for the sites
 	 */
-	login: IAuth;
+	login: IAuth
 
 	/**
 	 * Previous password history when updating passwords
 	 */
-	passwordHistory: string[];
+	passwordHistory: string[]
 
 	/**
 	 * The key to use for TOTP generation
@@ -101,39 +102,39 @@ export declare interface ICookie {
 	/**
 	 * The name of the cookie in the cookie section
 	 */
-	name: string;
+	name: string
 
 	/**
 	 * The different options for the cookie
 	 */
-	options: ICookieOptions;
+	options: ICookieOptions
 }
 
 export declare interface ICookieOptions {
 	/**
 	 * The path to store the cookie
 	 */
-	path?: string;
+	path?: string
 
 	/**
 	 * The domain of the site the cookie is for
 	 */
-	domain?: string;
+	domain?: string
 
 	/**
 	 * When the cookie is meant to expire
 	 */
-	expires?: number;
+	expires?: number
 
 	/**
 	 * Should the cookie be secure
 	 */
-	secure?: boolean;
+	secure?: boolean
 
 	/**
 	 * How strict is the cookie
 	 */
-	sameSite?: SameSite;
+	sameSite?: SameSite
 }
 
 /**
@@ -143,17 +144,17 @@ export declare interface IAuth {
 	/**
 	 * The username
 	 */
-	username: string;
+	username: string
 
 	/**
 	 * The password
 	 */
-	password: string;
+	password: string
 
 	/**
 	 * The salt for encryption
 	 */
-	salt?: string;
+	salt?: string
 }
 
 /**
@@ -163,14 +164,14 @@ export declare interface IUserConfig {
 	/**
 	 * The number of minutes to wait before sync the passwords on the site
 	 */
-	syncTime?: number;
+	syncTime: number
 }
 
 /**
  * Default behaviour of a dialog box
  */
 export declare interface IDialog {
-	close(value: any): void;
+	close(value: any): void
 }
 
 export declare interface ITimerConfig {
@@ -187,7 +188,7 @@ export declare interface ITimerConfig {
 	/**
 	 * How long will the timer take to execute
 	 */
-	time?: number
+	time: number
 
 	/**
 	 * What kind of timer is it
@@ -210,20 +211,21 @@ export declare interface ITotpConfig {
 	/**
 	 * Number of digits in TOTP
 	 */
-	digits?: number,
+	digits: number
 
 	/**
 	 * Amount of time in seconds the TOTP is active
 	 */
-	period?: number,
+	period: number
 
 	/**
 	 * The algorithm to use for the TOTP generation
 	 */
-	algorithm?: string,
+	algorithm?: string
 
 	/**
 	 * The timestamp in ms to generate the TOTP for
 	 */
 	timestamp?: number
 }
+

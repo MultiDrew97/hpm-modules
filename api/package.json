@@ -1,15 +1,15 @@
 {
   "name": "@herbivore/api",
-  "version": "1.2.7",
+  "version": "2.0.0",
   "description": "Herbivore Password Manager - API",
   "author": "herbivore",
   "license": "MIT",
   "main": "index.js",
   "typings": "index.d.ts",
   "scripts": {
-    "prepublish": "npm run build",
+    "prepare": "npm run build",
     "build": "tsc",
-    "build:test": "tsc -p lib/spec/tsconfig.spec.json",
+    "build:test": "tsc -p ./lib/spec/tsconfig.spec.json",
     "test": "NODE_OPTIONS=--loader=ts-node/esm jasmine --config=./lib/spec/jasmine.json",
     "publish:prod": "cp package.json ./dist && cd dist && npm publish --access public",
     "publish:dry": "cp package.json ./dist && cd dist && npm publish --access public --dry-run"
@@ -19,7 +19,7 @@
   },
   "dependencies": {
     "mongoose": "^6.5.0",
-    "@herbivore/core": "^1.4.0",
+    "@herbivore/core": "file:../core/dist",
     "tslib": "^2.4.0"
   },
   "devDependencies": {
