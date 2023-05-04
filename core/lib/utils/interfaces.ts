@@ -204,6 +204,17 @@ export declare interface ITimerConfig {
 	args: any[]
 }
 
+type TotpAlgorithm =
+	| 'SHA-1'
+	| 'SHA-224'
+	| 'SHA-256'
+	| 'SHA-384'
+	| 'SHA-512'
+	| 'SHA3-224'
+	| 'SHA3-256'
+	| 'SHA3-384'
+	| 'SHA3-512'
+
 /**
  * The config for generating a TOTP code
  */
@@ -221,11 +232,12 @@ export declare interface ITotpConfig {
 	/**
 	 * The algorithm to use for the TOTP generation
 	 */
-	algorithm?: string
+	algorithm?: TotpAlgorithm
 
 	/**
 	 * The timestamp in ms to generate the TOTP for
 	 */
 	timestamp?: number
 }
+
 
