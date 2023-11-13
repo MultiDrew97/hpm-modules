@@ -1,16 +1,13 @@
 {
 	"compileOnSave" : true,
 	"compilerOptions" : {
-		"module" : "Node16",
-		"target" : "es2017",
-		"allowJs" : true,
-		"skipLibCheck" : true,
-		"baseUrl" : "./lib",
-		"lib" : [
-			"es2017",
-			"dom"
-		],
-		"importHelpers" : true,
+		"module": "Node16",
+		"target": "es2017",
+		"allowJs": true,
+		"skipLibCheck": true,
+		"baseUrl": "./lib",
+		"lib": ["es2017", "dom"],
+		"importHelpers": true,
 		"forceConsistentCasingInFileNames": true,
 		"strict": true,
 		"noImplicitReturns": true,
@@ -18,11 +15,11 @@
 		"declaration": true,
 		"downlevelIteration": true,
 		"experimentalDecorators": true,
-		"allowSyntheticDefaultImports" : true,
-		"moduleResolution" : "Node",
-		"outDir" : "./dist",
+		"allowSyntheticDefaultImports": true,
+		"moduleResolution": "Node16",
+		"outDir": "./dist",
 		"rootDir": "./lib",
-		"esModuleInterop" : true
+		"esModuleInterop": true
 	},
 	"exclude" : [
 		"node_modules",
