@@ -1,6 +1,9 @@
-import {Md5} from "ts-md5";
+import { Types, isObjectIdOrHexString } from 'mongoose'
+import { Md5 } from 'ts-md5'
+import { ArgumentError } from './errors'
 
-export {Convert} from "./conversion"
+export { Convert } from './conversion'
+export { encode, decode } from 'js-base64'
 /**
  * Returns the index of the provided value in the provided array
  * @param array The array to search through
@@ -29,18 +32,11 @@ export function encrypt(plainText: string, salt?: string): string {
 	return Md5.hashStr(`${plainText}${salt}`)
 }
 
-/**
- * Perform Url encoding
- * @param value The value to encode
- */
-export function encode(value: string): string {
-	return btoa(value)
-}
+export function toObjectId(value?: string): Types.ObjectId {
+	if (!value || !isObjectIdOrHexString(value))
+		throw new ArgumentError(
+			`Provided ID '${value}' is not a valid ObjectID`
+		)
 
-/**
- * Perform Url decoding
- * @param value The value to decode
- */
-export function decode(value: string): string {
-	return atob(value)
+	return new Types.ObjectId(value)
 }

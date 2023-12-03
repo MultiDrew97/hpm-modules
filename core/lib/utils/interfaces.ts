@@ -1,21 +1,112 @@
-import { ConnectOptions, Document } from 'mongoose'
+import { ConnectOptions, Types } from 'mongoose'
 import { TimerType } from './timer'
-import { SameSite } from '.'
+import { SameSite, TotpAlgorithm } from '.'
 
 /**
  * The base class for any database entry
  */
-export declare interface IDbEntry extends Document {
+declare interface IDbEntry {
 	/**
 	 * ID of the current database entry
 	 */
-	// _id?: any
+	_id?: any
 
 	/**
 	 * Name of entry/person
 	 */
 	name: string
 }
+
+/**
+ * The user data for a specific user
+ */
+export interface IUser extends IDbEntry {
+	/**
+	 * IDs/Password entries for the given user
+	 */
+	entries: (IEntry | Types.ObjectId | string)[]
+
+	/**
+	 * The settings used for the logged-in user
+	 */
+	config: IUserConfig
+
+	/**
+	 * The login info for the user
+	 */
+	login: IAuth
+}
+
+/**
+ * A password entry for a user
+ */
+export interface IEntry extends IDbEntry {
+	/**
+	 * The sites that the password are used for
+	 */
+	sites: string[]
+
+	/**
+	 * The login for the sites
+	 */
+	login: IAuth
+
+	/**
+	 * Previous password history when updating passwords
+	 */
+	passwordHistory: string[]
+
+	/**
+	 * The key to use for TOTP generation
+	 */
+	totpKey?: string
+}
+
+/**
+ * Used for storing credential data
+ */
+export declare interface IAuth {
+	/**
+	 * The username
+	 */
+	username: string
+
+	/**
+	 * The password
+	 */
+	password?: string
+
+	/**
+	 * The salt for encryption
+	 */
+	salt?: string
+}
+/**
+ * The configuration to use per user
+ */
+export declare interface IUserConfig {
+	/**
+	 * The number of minutes to wait before syncing passwords. A required field in the config
+	 */
+	syncTime: number
+
+	[k: string]: any
+}
+
+/**
+ * The base class for any database entry
+ */
+// export declare interface IDbEntry extends Document {
+// 	/**
+// 	 * ID of the current database entry
+// 	 */
+// 	// _id?: any
+
+// 	/**
+// 	 * Name of entry/person
+// 	 */
+// 	name: string
+// }
 
 /**
  * Database configuration template
@@ -50,50 +141,50 @@ export declare interface IConnectOptions extends ConnectOptions {
 /**
  * The user data for a specific user
  */
-export declare interface IUser extends IDbEntry {
-	/**
-	 * The email address for the user
-	 */
-	email: string
-	/**
-	 * IDs/Password entries for the given user
-	 */
-	entries: (IPassEntry | string)[]
-	/**
-	 * The settings used for the logged-in user
-	 */
-	config: IUserConfig
+// export declare interface IUser extends IDbEntry {
+// 	/**
+// 	 * The email address for the user
+// 	 */
+// 	email: string
+// 	/**
+// 	 * IDs/Password entries for the given user
+// 	 */
+// 	entries: (IPassEntry | string)[]
+// 	/**
+// 	 * The settings used for the logged-in user
+// 	 */
+// 	config: IUserConfig
 
-	/**
-	 * The login info for the user
-	 */
-	login: IAuth
-}
+// 	/**
+// 	 * The login info for the user
+// 	 */
+// 	login: IAuth
+// }
 
 /**
  * A password entry for a user
  */
-export declare interface IPassEntry extends IDbEntry {
-	/**
-	 * The sites that the password are used for
-	 */
-	sites: string[]
+// export declare interface IPassEntry extends IDbEntry {
+// 	/**
+// 	 * The sites that the password are used for
+// 	 */
+// 	sites: string[]
 
-	/**
-	 * The login for the sites
-	 */
-	login: IAuth
+// 	/**
+// 	 * The login for the sites
+// 	 */
+// 	login: IAuth
 
-	/**
-	 * Previous password history when updating passwords
-	 */
-	passwordHistory: string[]
+// 	/**
+// 	 * Previous password history when updating passwords
+// 	 */
+// 	passwordHistory: string[]
 
-	/**
-	 * The key to use for TOTP generation
-	 */
-	totpKey?: string
-}
+// 	/**
+// 	 * The key to use for TOTP generation
+// 	 */
+// 	totpKey?: string
+// }
 
 /**
  * Used for storing cookie configurations
@@ -138,34 +229,14 @@ export declare interface ICookieOptions {
 }
 
 /**
- * Used for storing credential data
- */
-export declare interface IAuth {
-	/**
-	 * The username
-	 */
-	username: string
-
-	/**
-	 * The password
-	 */
-	password: string
-
-	/**
-	 * The salt for encryption
-	 */
-	salt?: string
-}
-
-/**
  * The configuration to use per user
  */
-export declare interface IUserConfig {
-	/**
-	 * The number of minutes to wait before sync the passwords on the site
-	 */
-	syncTime: number
-}
+// export declare interface IUserConfig {
+// 	/**
+// 	 * The number of minutes to wait before sync the passwords on the site
+// 	 */
+// 	syncTime: number
+// }
 
 /**
  * Default behaviour of a dialog box
@@ -203,17 +274,6 @@ export declare interface ITimerConfig {
 	 */
 	args: any[]
 }
-
-type TotpAlgorithm =
-	| 'SHA-1'
-	| 'SHA-224'
-	| 'SHA-256'
-	| 'SHA-384'
-	| 'SHA-512'
-	| 'SHA3-224'
-	| 'SHA3-256'
-	| 'SHA3-384'
-	| 'SHA3-512'
 
 /**
  * The config for generating a TOTP code

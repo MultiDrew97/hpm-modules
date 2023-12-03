@@ -1,14 +1,13 @@
-import {User} from "../../database";
-import {IAuth, IUser} from "@herbivore/core/utils/interfaces";
-import {IncomingHttpHeaders} from "http";
-import {validateHeaders, validateQueryID} from "../../utils";
+import { User } from '../../lib/database'
+import { IAuth, IUser } from '@herbivore/core/utils/interfaces'
+import { IncomingHttpHeaders } from 'http'
+import { validateHeaders, validateQueryID } from '../../lib/utils'
 
 export const getPassEntry = async (userID?: string) => {
 	try {
 		let user: IUser | null = await User.findById(userID)
 
-		if (!user)
-			throw new Error()
+		if (!user) throw new Error()
 
 		return user.entries
 	} catch {
@@ -16,10 +15,12 @@ export const getPassEntry = async (userID?: string) => {
 	}
 }
 
-export const getUser = async (username?: string): Promise<IUser[] | undefined>  => {
-	let users = await (username ? User.find({username}) : User.find())
+export const getUser = async (
+	username?: string
+): Promise<IUser[] | undefined> => {
+	let users = await (username ? User.find({ username }) : User.find())
 	return users.length > 0 ? users : undefined
-};
+}
 
 export const login = async (auth: IAuth) => {
 	try {
@@ -38,7 +39,11 @@ export const checkPassword = async (id: string, password: string) => {
 	}
 }
 
-export const verifyHeaders = (headers: IncomingHttpHeaders, regex: RegExp, auth: IAuth) => {
+export const verifyHeaders = (
+	headers: IncomingHttpHeaders,
+	regex: RegExp,
+	auth: IAuth
+) => {
 	try {
 		validateHeaders(headers, regex, auth)
 		return true
