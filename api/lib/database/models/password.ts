@@ -1,4 +1,4 @@
-import { IPassEntry } from "@herbivore/core/utils/interfaces";
+import { IEntry } from "@herbivore/core/utils/interfaces";
 import {Model, model, Schema, SchemaTypes, Document} from "mongoose";
 import {User} from "./user";
 
@@ -7,7 +7,7 @@ export const CollectionName = {
 	collection: 'Entries',
 }
 
-export interface IPassEntryDoc extends IPassEntry, Document {
+export interface IPassEntryDoc extends IEntry, Document {
 	/**
 	 * Update the password stored for the entry
 	 * @param newPassword The new password to update to
@@ -27,7 +27,7 @@ interface IPassEntryModel extends Model<IPassEntryDoc> {
 	 * @param userID ID of user to add to
 	 * @param newEntry New entry to add
 	 */
-	addEntry(userID: string, newEntry: IPassEntry): Promise<boolean>
+	addEntry(userID: string, newEntry: IEntry): Promise<boolean>
 }
 
 const entrySchema: Schema<IPassEntryDoc> = new Schema({
@@ -81,7 +81,7 @@ const entrySchema: Schema<IPassEntryDoc> = new Schema({
 
 entrySchema.static(
 	'addEntry',
-	function (userID: string, newEntry: IPassEntry): Promise<any> {
+	function (userID: string, newEntry: IEntry): Promise<any> {
 		return PassEntry.create(newEntry)
 			.then((password) => {
 				return User.addEntry(userID, password.id!)

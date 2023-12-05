@@ -1,4 +1,4 @@
-import {IAuth, IPassEntry, IUser, IUserConfig} from "@herbivore/core/utils/interfaces";
+import {IAuth, IEntry, IUser, IUserConfig} from "@herbivore/core/utils/interfaces";
 import {model, Model, Schema, SchemaTypes, Types, Document} from "mongoose";
 import { encrypt, DEFAULT_CONFIG } from '@herbivore/core/utils'
 import {
@@ -82,11 +82,6 @@ const userSchema: Schema<IUserDoc> = new Schema({
 		type: SchemaTypes.String,
 		default: 'John Doe',
 	},
-	email: {
-		type: SchemaTypes.String,
-		unique: true,
-		required: true,
-	},
 	entries: [
 		{
 			type: SchemaTypes.ObjectId,
@@ -119,15 +114,15 @@ userSchema.pre('save', function () {
 	if (!this.isNew) return
 
 	// this.login.salt = (new Types.ObjectId()).toString()
-	this.login.password = encrypt(this.login.password, this.login.salt)
+	this.login.password = encrypt(this.login.password!, this.login.salt)
 })
 
 userSchema.pre(/.*delete.*/i, function () {
-	console.log(this.id)
-	console.log(this.entries)
-	for (let entry of this.entries) {
-		PassEntry.findByIdAndDelete(entry)
-	}
+	// console.log(this.id)
+	// console.log(this.entries)
+	// for (let entry of this.entries) {
+	// 	PassEntry.findByIdAndDelete(entry)
+	// }
 })
 
 /*userSchema.pre(/find.*!/, function() {
@@ -156,7 +151,7 @@ userSchema.static('login', async function (auth: IAuth): Promise<IUser> {
 		(user) => {
 			if (!user) throw new LoginError('Unknown username')
 
-			if (user.login.password !== encrypt(auth.password, user.login.salt))
+			if (user.login.password !== encrypt(auth.password!, user.login.salt))
 				throw new LoginError('Incorrect password')
 
 			return user
@@ -194,7 +189,7 @@ userSchema.static(
 userSchema.static(
 	'removeEntry',
 	async function (userID: string, entryID: string): Promise<boolean> {
-		let removed: (IPassEntry | string)[]
+		let removed: (IEntry | Types.ObjectId | string)[]
 		return User.findById(userID).then((user: IUserDoc | null) => {
 			if (!user) throw new ArgumentError(`Unknown userID ${userID}`)
 
@@ -232,10 +227,10 @@ userSchema.static(
 )
 
 userSchema.static('getSalt', async function (userID: any): Promise<string> {
-	return await User.findById(userID).then((user) => {
+	return await User.findById(userID, 'login.salt').then((user) => {
 		if (!user) throw new DatabaseError(`Unknown userID ${userID}`)
 
-		return user.login.password
+		return user.login.salt!
 	})
 })
 

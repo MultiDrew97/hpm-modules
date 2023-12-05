@@ -1,7 +1,5 @@
 import { User } from '../../lib/database'
 import { IAuth, IUser } from '@herbivore/core/utils/interfaces'
-import { IncomingHttpHeaders } from 'http'
-import { validateHeaders, validateQueryID } from '../../lib/utils'
 
 export const getPassEntry = async (userID?: string) => {
 	try {
@@ -36,27 +34,5 @@ export const checkPassword = async (id: string, password: string) => {
 		return await User.checkPassword(id, password)
 	} catch (e: any) {
 		throw e
-	}
-}
-
-export const verifyHeaders = (
-	headers: IncomingHttpHeaders,
-	regex: RegExp,
-	auth: IAuth
-) => {
-	try {
-		validateHeaders(headers, regex, auth)
-		return true
-	} catch (e) {
-		return false
-	}
-}
-
-export const verifyIDs = (...ids: any) => {
-	try {
-		validateQueryID(...ids)
-		return true
-	} catch (e) {
-		return false
 	}
 }

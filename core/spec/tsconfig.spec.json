@@ -3,7 +3,7 @@
 	"compilerOptions": {
 		"target": "ES2020",
 		"module": "ES2020",
-		"types": ["jasmine"]
+		"types": ["jest"]
 	},
 	"ts-node": {
 		"transpileOnly": true

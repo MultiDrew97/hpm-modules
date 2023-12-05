@@ -1,11 +1,11 @@
 {
-	"compileOnSave" : true,
-	"compilerOptions" : {
+	"compileOnSave": true,
+	"compilerOptions": {
 		"module": "Node16",
 		"target": "es2017",
 		"allowJs": true,
 		"skipLibCheck": true,
-		"baseUrl": "./lib",
+		"baseUrl": "./",
 		"lib": ["es2017", "dom"],
 		"importHelpers": true,
 		"forceConsistentCasingInFileNames": true,
@@ -18,8 +18,8 @@
 		"allowSyntheticDefaultImports": true,
 		"moduleResolution": "Node16",
 		"outDir": "./dist",
-		"rootDir": "./lib",
+		"rootDir": "./",
 		"esModuleInterop": true
 	},
-	"exclude" : ["node_modules", "dist", "spec"]
+	"exclude": ["node_modules", "dist"]
 }

@@ -1,12 +1,12 @@
 {
 	"compileOnSave" : true,
 	"compilerOptions" : {
-		"module": "NodeNext",
-		"target": "ES2017",
+		"module": "ES2020",
+		"target": "ES2020",
 		"allowJs": true,
 		"skipLibCheck": true,
 		"baseUrl": "./lib",
-		"lib": ["es2017", "dom"],
+		"lib": ["es2020", "dom"],
 		"importHelpers": true,
 		"forceConsistentCasingInFileNames": true,
 		"strict": true,
@@ -16,11 +16,10 @@
 		"downlevelIteration": true,
 		"experimentalDecorators": true,
 		"allowSyntheticDefaultImports": true,
-		"moduleResolution": "NodeNext",
+		"moduleResolution": "Node",
 		"outDir": "./dist",
 		"rootDir": "./lib",
-		"esModuleInterop": true,
-		"typeRoots": ["node_modules/@types"]
+		"esModuleInterop": true
 	},
 	"exclude" : ["node_modules", "dist", "spec"]
 }

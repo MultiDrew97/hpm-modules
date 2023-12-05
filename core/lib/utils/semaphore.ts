@@ -1,4 +1,4 @@
-import { cpus } from 'os'
+const { cpus } = require('os')
 
 /**
  * A lock that is granted when calling [[Semaphore.acquire]].
@@ -87,11 +87,7 @@ export class Semaphore {
 		)
 
 		this.waiting.forEach((task) => {
-			task.reject(
-				new Error(
-					'The semaphore was purged and as a result this task has been cancelled'
-				)
-			)
+			task.reject(new Error('The semaphore was purged and as a result this task has been cancelled'))
 		})
 
 		this.running = 0
@@ -104,8 +100,7 @@ export class Semaphore {
  ***********************/
 
 // Just a promise that resolves in `ms` milliseconds
-export const wait = (ms: number) =>
-	new Promise((resolve) => setTimeout(resolve, ms))
+export const wait = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms))
 
 export class Mutex {
 	private static locked: boolean
@@ -126,4 +121,3 @@ export class Mutex {
 		this.locked = false
 	}
 }
-

@@ -1,0 +1,12 @@
+{
+	"scripts": {
+		"build": "npm run build:core && npm run build:api && npm run build:logger",
+		"build:core": "cd ./core && npm run build",
+		"build:api": "cd ./api && npm run build",
+		"build:logger": "cd ./logging && npm run build",
+		"publish": "npm run publish:core && npm run publish:api && npm run publish:logger",
+		"publish:core": "cd ./core && npm run publish",
+		"publish:api": "cd ./api && npm run publish",
+		"publish:logger": "cd ./logging && npm run publish"
+	}
+}
