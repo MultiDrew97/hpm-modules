@@ -19,7 +19,7 @@
 		"moduleResolution": "Node",
 		"outDir": "./dist",
 		"rootDir": "./lib",
-		"esModuleInterop": true
+		"esModuleInterop": true,
 	},
 	"exclude" : ["node_modules", "dist", "spec"]
 }

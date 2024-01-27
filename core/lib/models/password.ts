@@ -1,6 +1,6 @@
-import { IEntry } from "@herbivore/core/utils/interfaces";
-import {Model, model, Schema, SchemaTypes, Document} from "mongoose";
-import {User} from "./user";
+import { IEntry } from '../utils/interfaces'
+import { Model, model, Schema, SchemaTypes, Document } from 'mongoose'
+import { User } from './user'
 
 export const CollectionName = {
 	name: 'Entry',
@@ -79,32 +79,26 @@ const entrySchema: Schema<IPassEntryDoc> = new Schema({
 	console.debug(this.login.password)
 })*/
 
-entrySchema.static(
-	'addEntry',
-	function (userID: string, newEntry: IEntry): Promise<any> {
-		return PassEntry.create(newEntry)
-			.then((password) => {
-				return User.addEntry(userID, password.id!)
-			})
-			.catch((reason) => {
-				return Promise.reject(reason)
-			})
-	}
-)
+entrySchema.static('addEntry', function (userID: string, newEntry: IEntry): Promise<any> {
+	return PassEntry.create(newEntry)
+		.then((password) => {
+			return User.addEntry(userID, password.id!)
+		})
+		.catch((reason) => {
+			return Promise.reject(reason)
+		})
+})
 
-entrySchema.method(
-	'updatePassword',
-	function (newPassword: string): Promise<any> {
-		if (this.passwordHistory.length >= 5) this.passwordHistory.shift()
+entrySchema.method('updatePassword', function (newPassword: string): Promise<any> {
+	if (this.passwordHistory.length >= 5) this.passwordHistory.shift()
 
-		this.passwordHistory.push(this.login.password)
+	this.passwordHistory.push(this.login.password)
 
-		// TODO: Is this encrypted before getting here?
-		this.login.password = newPassword
+	// TODO: Is this encrypted before getting here?
+	this.login.password = newPassword
 
-		return this.save()
-	}
-)
+	return this.save()
+})
 
 entrySchema.method('updateTotp', function (totpKey: string): Promise<any> {
 	this.totpKey = totpKey
@@ -123,7 +117,3 @@ export const PassEntry = model<IPassEntryDoc, IPassEntryModel>(
 	entrySchema,
 	CollectionName.collection
 )
-
-
-
-

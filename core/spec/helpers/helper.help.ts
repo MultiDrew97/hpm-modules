@@ -1,6 +1,5 @@
-import {register} from 'ts-node';
-import {} from "jasmine"
+import { register } from 'ts-node'
 
 register({
-	project: './lib/spec/tsconfig.spec.json'
-});
+	project: './lib/spec/tsconfig.spec.json',
+})

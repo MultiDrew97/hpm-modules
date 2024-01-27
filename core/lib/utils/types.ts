@@ -1,10 +1,3 @@
-import { ConnectOptions } from 'mongoose'
-
-export type MongoConfig = {
-	config?: ConnectOptions
-	url?: string
-}
-
 export type TotpAlgorithm =
 	| 'SHA-1'
 	| 'SHA-224'

@@ -7,7 +7,7 @@
   "main": "index.js",
   "typings": "index.d.ts",
   "scripts": {
-    "build": "tsc",
+    "build": "tsc && cp package.json ./dist",
     "build:test": "tsc -p ./lib/spec/tsconfig.spec.json",
     "test": "NODE_OPTIONS=--loader=ts-node/esm jasmine --config=./lib/spec/jasmine.json",
     "publish:prod": "cp package.json ./dist && cd dist && npm publish --access public",
@@ -19,7 +19,8 @@
   "dependencies": {
     "@herbivore/core": "file:../core/dist",
     "mongoose": "^6.5.0",
-    "tslib": "^2.4.0"
+    "tslib": "^2.4.0",
+    "js-base64": "^3.7.5"
   },
   "devDependencies": {
     "@skypack/package-check": "^0.2.2",
@@ -32,37 +33,19 @@
     "typescript": "^4.7.4"
   },
   "exports": {
-    ".": {
-      "types": "./index.d.ts",
-      "default": "./index.js"
-    },
     "./package.json": "./package.json",
-    "./database": {
-      "types": "./database/index.d.ts",
-      "default": "./database/index.js"
-    },
     "./utils": {
       "types": "./utils/index.d.ts",
       "default": "./utils/index.js"
     },
-    "./database/models": {
-      "types": "./database/models/index.d.ts",
-      "default": "./database/models/index.js"
-    },
-    "./database/models/user": {
-      "types": "./database/models/user.d.ts",
-      "default": "./database/models/user.js"
-    },
-    "./database/models/password": {
-      "types": "./database/models/password.d.ts",
-      "default": "./database/models/password.js"
+    "./database": {
+      "types": "./database/index.d.ts",
+      "default": "./database/index.js"
     }
   },
   "keywords": [
     "api",
-    "hpm",
-    "password",
-    "password manager"
+    "herbivore"
   ],
   "repository": {
     "url": "https://github.com/MultiDrew97/hpm-modules",

@@ -1,11 +1,7 @@
-import { getAuth } from '../lib/utils'
+import { getAuth } from '../lib/utils/index.js'
 import { IncomingHttpHeaders } from 'http'
-import {
-	ArgumentError,
-	AuthorizationError,
-	encode,
-} from '@herbivore/core/utils'
 import { IAuth } from '@herbivore/core/utils/interfaces'
+import { encode } from 'js-base64'
 
 let apiAuth: IAuth = {
 	username: 'username',
@@ -17,6 +13,7 @@ let authRegex: RegExp = /Basic .+/
 let validHeader: IncomingHttpHeaders = {
 	authorization: `Basic ${encode(`${apiAuth.username}:${apiAuth.password}`)}`,
 }
+
 let invalidHeader: IncomingHttpHeaders = {}
 
 describe('General Utility Functions', function () {

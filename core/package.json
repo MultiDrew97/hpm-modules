@@ -6,9 +6,8 @@
   "license": "MIT",
   "main": "index.js",
   "typings": "index.d.ts",
-  "type": "module",
   "scripts": {
-    "build": "tsc",
+    "build": "tsc && cp package.json ./dist",
     "build:test": "tsc -p ./lib/spec/tsconfig.spec.json",
     "test": "NODE_OPTIONS=--loader=ts-node/esm jasmine --config=./lib/spec/jasmine.json",
     "publish:prod": "cp package.json ./dist && cd dist && npm publish --access public",
@@ -35,10 +34,6 @@
     "typescript": "^4.7.4"
   },
   "exports": {
-    ".": {
-      "types": "./index.d.ts",
-      "default": "./index.js"
-    },
     "./package.json": "./package.json",
     "./utils": {
       "types": "./utils/index.d.ts",
@@ -67,6 +62,10 @@
     "./utils/timer": {
       "types": "./utils/timer.d.ts",
       "default": "./utils/timer.js"
+    },
+    "./database/models": {
+      "types": "./models/index.d.ts",
+      "default": "./models/index.js"
     }
   },
   "keywords": [
