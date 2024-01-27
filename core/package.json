@@ -18,7 +18,7 @@
   },
   "dependencies": {
     "ts-md5": "^1.2.11",
-    "mongoose": "^6.5.0",
+    "mongoose": "latest",
     "tslib": "^2.4.0",
     "os": "^0.1.2"
   },

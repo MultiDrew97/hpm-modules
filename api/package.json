@@ -19,7 +19,7 @@
   "dependencies": {
     "@herbivore/core": "file:../core/dist",
     "js-base64": "^3.7.5",
-    "mongoose": "^6.5.0",
+    "mongoose": "latest",
     "tslib": "^2.4.0"
   },
   "devDependencies": {
