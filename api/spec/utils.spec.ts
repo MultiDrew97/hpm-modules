@@ -1,7 +1,7 @@
 import { getAuth } from '../lib/utils/index.js'
 import { IncomingHttpHeaders } from 'http'
 import { IAuth } from '@herbivore/core/utils/interfaces'
-import { encode } from 'js-base64'
+import { encode } from '../lib/utils'
 
 let apiAuth: IAuth = {
 	username: 'username',

@@ -1,11 +1,9 @@
-import { ConnectOptions, Types } from 'mongoose'
-import { TimerType } from './timer'
-import { SameSite, TotpAlgorithm } from '.'
+import { ConnectOptions } from 'mongoose'
 
 /**
  * The base class for any database entry
  */
-declare interface IDbEntry {
+export interface IDbEntry {
 	/**
 	 * ID of the current database entry
 	 */
@@ -15,51 +13,6 @@ declare interface IDbEntry {
 	 * Name of entry/person
 	 */
 	name: string
-}
-
-/**
- * The user data for a specific user
- */
-export interface IUser extends IDbEntry {
-	/**
-	 * IDs/Password entries for the given user
-	 */
-	entries: (IEntry | Types.ObjectId | string)[]
-
-	/**
-	 * The settings used for the logged-in user
-	 */
-	config: IUserConfig
-
-	/**
-	 * The login info for the user
-	 */
-	login: IAuth
-}
-
-/**
- * A password entry for a user
- */
-export interface IEntry extends IDbEntry {
-	/**
-	 * The sites that the password are used for
-	 */
-	sites: string[]
-
-	/**
-	 * The login for the sites
-	 */
-	login: IAuth
-
-	/**
-	 * Previous password history when updating passwords
-	 */
-	passwordHistory: string[]
-
-	/**
-	 * The key to use for TOTP generation
-	 */
-	totpKey?: string
 }
 
 /**
@@ -81,32 +34,6 @@ export declare interface IAuth {
 	 */
 	salt?: string
 }
-/**
- * The configuration to use per user
- */
-export declare interface IUserConfig {
-	/**
-	 * The number of minutes to wait before syncing passwords. A required field in the config
-	 */
-	syncTime: number
-
-	[k: string]: any
-}
-
-/**
- * The base class for any database entry
- */
-// export declare interface IDbEntry extends Document {
-// 	/**
-// 	 * ID of the current database entry
-// 	 */
-// 	// _id?: any
-
-// 	/**
-// 	 * Name of entry/person
-// 	 */
-// 	name: string
-// }
 
 /**
  * Database configuration template
@@ -137,167 +64,3 @@ export declare interface IConnectOptions extends ConnectOptions {
 	useNewUrlParser: boolean
 	useUnifiedTopology: boolean
 }
-
-/**
- * The user data for a specific user
- */
-// export declare interface IUser extends IDbEntry {
-// 	/**
-// 	 * The email address for the user
-// 	 */
-// 	email: string
-// 	/**
-// 	 * IDs/Password entries for the given user
-// 	 */
-// 	entries: (IPassEntry | string)[]
-// 	/**
-// 	 * The settings used for the logged-in user
-// 	 */
-// 	config: IUserConfig
-
-// 	/**
-// 	 * The login info for the user
-// 	 */
-// 	login: IAuth
-// }
-
-/**
- * A password entry for a user
- */
-// export declare interface IPassEntry extends IDbEntry {
-// 	/**
-// 	 * The sites that the password are used for
-// 	 */
-// 	sites: string[]
-
-// 	/**
-// 	 * The login for the sites
-// 	 */
-// 	login: IAuth
-
-// 	/**
-// 	 * Previous password history when updating passwords
-// 	 */
-// 	passwordHistory: string[]
-
-// 	/**
-// 	 * The key to use for TOTP generation
-// 	 */
-// 	totpKey?: string
-// }
-
-/**
- * Used for storing cookie configurations
- */
-export declare interface ICookie {
-	/**
-	 * The name of the cookie in the cookie section
-	 */
-	name: string
-
-	/**
-	 * The different options for the cookie
-	 */
-	options: ICookieOptions
-}
-
-export declare interface ICookieOptions {
-	/**
-	 * The path to store the cookie
-	 */
-	path?: string
-
-	/**
-	 * The domain of the site the cookie is for
-	 */
-	domain?: string
-
-	/**
-	 * When the cookie is meant to expire
-	 */
-	expires?: number
-
-	/**
-	 * Should the cookie be secure
-	 */
-	secure?: boolean
-
-	/**
-	 * How strict is the cookie
-	 */
-	sameSite?: SameSite
-}
-
-/**
- * The configuration to use per user
- */
-// export declare interface IUserConfig {
-// 	/**
-// 	 * The number of minutes to wait before sync the passwords on the site
-// 	 */
-// 	syncTime: number
-// }
-
-/**
- * Default behaviour of a dialog box
- */
-export declare interface IDialog {
-	close(value: any): void
-}
-
-export declare interface ITimerConfig {
-	/**
-	 * The name of the timer
-	 */
-	name: string
-
-	/**
-	 * The function that the timer will be executing
-	 */
-	fn: TimerHandler | Function
-
-	/**
-	 * How long will the timer take to execute
-	 */
-	time: number
-
-	/**
-	 * What kind of timer is it
-	 */
-	type: TimerType
-
-	/**
-	 * Any arguments that are to be passed to the function
-	 *
-	 * Should be passed like:
-	 * 		[thisArg, [funcArgs]]
-	 */
-	args: any[]
-}
-
-/**
- * The config for generating a TOTP code
- */
-export declare interface ITotpConfig {
-	/**
-	 * Number of digits in TOTP
-	 */
-	digits: number
-
-	/**
-	 * Amount of time in seconds the TOTP is active
-	 */
-	period: number
-
-	/**
-	 * The algorithm to use for the TOTP generation
-	 */
-	algorithm?: TotpAlgorithm
-
-	/**
-	 * The timestamp in ms to generate the TOTP for
-	 */
-	timestamp?: number
-}
-
-

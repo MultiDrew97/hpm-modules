@@ -2,18 +2,16 @@
   "name": "@herbivore/logger",
   "version": "1.0.0",
   "description": "A module to try to help simplify and add scalability to my personal projects.",
-  "author": "herbivore",
+  "author": "Herbivore",
   "license": "MIT",
-  "main": "index.js",
-  "typings": "index.d.ts",
-  "type": "module",
+  "main": "./dist/index.js",
+  "typings": "./dist/index.d.ts",
   "scripts": {
-    "prepublish": "npm run build",
     "build": "tsc",
-    "build:test": "tsc -p lib/spec/tsconfig.spec.json",
-    "test": "NODE_OPTIONS=--loader=ts-node/esm jasmine --config=./lib/spec/jasmine.json",
-    "publish:prod": "cp package.json dist && cd dist && npm publish --access public",
-    "publish:dry": "cp package.json dist && cd dist && npm publish --access public --dry-run"
+    "build:test": "tsc -p ./spec/tsconfig.spec.json",
+    "test": "NODE_OPTIONS=--loader=ts-node/esm jasmine --config=./spec/jasmine.json",
+    "publish:prod": "cp package.json ./dist && cd dist && npm publish --access public",
+    "publish:dry": "cp package.json ./dist && cd dist && npm publish --access public --dry-run"
   },
   "engines": {
     "node": "^14.15.0 || >=16.10.0"

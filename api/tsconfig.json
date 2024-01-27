@@ -1,25 +1,9 @@
 {
-	"compileOnSave": true,
+	"extends": "../tsconfig.json",
 	"compilerOptions": {
-		"module": "Node16",
-		"target": "es2017",
-		"allowJs": true,
-		"skipLibCheck": true,
-		"baseUrl": "./",
-		"lib": ["es2017", "dom"],
-		"importHelpers": true,
-		"forceConsistentCasingInFileNames": true,
-		"strict": true,
-		"noImplicitReturns": true,
-		"noFallthroughCasesInSwitch": true,
-		"declaration": true,
-		"downlevelIteration": true,
-		"experimentalDecorators": true,
-		"allowSyntheticDefaultImports": true,
-		"moduleResolution": "Node16",
 		"outDir": "./dist",
-		"rootDir": "./",
-		"esModuleInterop": true
+		"baseUrl": ".",
+		"rootDir": "./lib"
 	},
-	"exclude": ["node_modules", "dist"]
+	"exclude": ["node_modules", "dist", "spec"]
 }

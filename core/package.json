@@ -2,14 +2,14 @@
   "name": "@herbivore/core",
   "version": "3.0.0",
   "description": "Herbivore Password Manager - Core",
-  "author": "herbivore",
+  "author": "Herbivore",
   "license": "MIT",
-  "main": "index.js",
-  "typings": "index.d.ts",
+  "main": "./dist/index.js",
+  "typings": "./dist/index.d.ts",
   "scripts": {
-    "build": "tsc && cp package.json ./dist",
-    "build:test": "tsc -p ./lib/spec/tsconfig.spec.json",
-    "test": "NODE_OPTIONS=--loader=ts-node/esm jasmine --config=./lib/spec/jasmine.json",
+    "build": "tsc",
+    "build:test": "tsc -p ./spec/tsconfig.spec.json",
+    "test": "NODE_OPTIONS=--loader=ts-node/esm jasmine --config=./spec/jasmine.json",
     "publish:prod": "cp package.json ./dist && cd dist && npm publish --access public",
     "publish:dry": "cp package.json ./dist && cd dist && npm publish --access public --dry-run"
   },
@@ -20,9 +20,7 @@
     "ts-md5": "^1.2.11",
     "mongoose": "^6.5.0",
     "tslib": "^2.4.0",
-    "os": "^0.1.2",
-    "os-browserify": "~0.3.0",
-    "js-base64": "^3.7.5"
+    "os": "^0.1.2"
   },
   "devDependencies": {
     "@skypack/package-check": "^0.2.2",
@@ -32,41 +30,6 @@
     "ts-node": "^10.9.1",
     "ts-jest": "latest",
     "typescript": "^4.7.4"
-  },
-  "exports": {
-    "./package.json": "./package.json",
-    "./utils": {
-      "types": "./utils/index.d.ts",
-      "default": "./utils/index.js"
-    },
-    "./utils/errors": {
-      "types": "./utils/errors.d.ts",
-      "default": "./utils/errors.js"
-    },
-    "./utils/conversion": {
-      "types": "./utils/conversion.d.ts",
-      "default": "./utils/conversion.js"
-    },
-    "./utils/interfaces": {
-      "types": "./utils/interfaces.d.ts",
-      "default": "./utils/interfaces.js"
-    },
-    "./utils/functions": {
-      "types": "./utils/functions.d.ts",
-      "default": "./utils/functions.js"
-    },
-    "./utils/constants": {
-      "types": "./utils/constants.d.ts",
-      "default": "./utils/constants.js"
-    },
-    "./utils/timer": {
-      "types": "./utils/timer.d.ts",
-      "default": "./utils/timer.js"
-    },
-    "./database/models": {
-      "types": "./models/index.d.ts",
-      "default": "./models/index.js"
-    }
   },
   "keywords": [
     "core",
@@ -78,5 +41,9 @@
     "url" : "https://github.com/MultiDrew97/hpm-modules",
     "directory" : "core",
     "type" : "git"
+  },
+  "directories": {
+    "test": "./spec",
+    "lib": "./dist"
   }
 }

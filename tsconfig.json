@@ -1,0 +1,21 @@
+{
+	"compileOnSave": true,
+	"compilerOptions": {
+		"module": "Node16",
+		"target": "ES2022",
+		"allowJs": true,
+		"skipLibCheck": true,
+		"lib": ["ES2022", "DOM"],
+		"importHelpers": true,
+		"forceConsistentCasingInFileNames": true,
+		"strict": true,
+		"noImplicitReturns": true,
+		"noFallthroughCasesInSwitch": true,
+		"declaration": true,
+		"downlevelIteration": true,
+		"experimentalDecorators": true,
+		"allowSyntheticDefaultImports": true,
+		"moduleResolution": "Node16",
+		"esModuleInterop": true
+	}
+}

@@ -1,88 +1,75 @@
-class CustomError extends Error {
-	constructor(message?: string, cause?: Error, name?: string) {
-		super(message)
-		this.cause = cause
+import { ErrorNames } from './enums'
 
-		if (name) this.name = name
+export class CustomError extends Error {
+	constructor(name: string, message?: string, cause?: any) {
+		super(message)
+		this.name = name
+		this.cause = cause
 	}
 }
 
 export class AuthorizationError extends CustomError {
-	constructor(message?: string, reason?: Error) {
-		super(message, reason)
-
-		this.name = 'AuthorizationError'
+	constructor(name: string = ErrorNames.Authorization, message?: string, reason?: Error) {
+		super(name, message, reason)
 	}
 }
 
 export class DatabaseError extends CustomError {
-	constructor(message?: string, reason?: Error) {
-		super(message, reason)
-
-		this.name = 'DatabaseError'
+	constructor(name: string = ErrorNames.Database, message?: string, reason?: Error) {
+		super(name, message, reason)
 	}
 }
 
 export class ConnectionError extends DatabaseError {
 	constructor(message?: string, reason?: Error) {
-		super(message, reason)
-
-		this.name = 'ConnectionError'
-	}
-}
-
-export class LoginError extends AuthorizationError {
-	constructor(message?: string, reason?: Error) {
-		super(message, reason)
-
-		this.name = 'LoginError'
+		super(ErrorNames.Connection, message, reason)
 	}
 }
 
 export class ArgumentError extends CustomError {
 	constructor(message?: string, reason?: Error) {
-		super(message, reason)
-
-		this.name = 'ArgumentError'
-	}
-}
-
-export class TimerError extends CustomError {
-	constructor(message?: string, reason?: Error) {
-		super(message, reason)
-
-		this.name = 'TimerError'
+		super(ErrorNames.Argument, message, reason)
 	}
 }
 
 export class AuthenticationError extends CustomError {
 	constructor(message?: string, reason?: Error) {
-		super(message, reason)
-
-		this.name = 'AuthenticationError'
+		super(ErrorNames.Authentication, message, reason)
 	}
 }
 
 export class PropertyError extends CustomError {
 	constructor(message?: string, reason?: Error) {
-		super(message, reason)
-
-		this.name = 'PropertyError'
+		super(ErrorNames.Property, message, reason)
 	}
 }
 
 export class NotYetImplementedError extends CustomError {
 	constructor(message?: string) {
-		super(message ?? 'Property has not yet been implemented')
-
-		this.name = 'NotYetImplementedError'
+		super(ErrorNames.NotImplemented, message ?? 'Property has not yet been implemented')
 	}
 }
 
-export class TotpError extends CustomError {
-	constructor(message?: string, reason?: Error) {
-		super(message, reason)
+export class NotFoundError extends CustomError {
+	constructor(message?: string) {
+		super(ErrorNames.NotFound, message)
+	}
+}
 
-		this.name = 'TotpError'
+export class UpdateError extends CustomError {
+	constructor(message?: string) {
+		super(ErrorNames.Update, message)
+	}
+}
+
+export class RemoveError extends CustomError {
+	constructor(message?: string) {
+		super(ErrorNames.Remove, message)
+	}
+}
+
+export class CreationError extends CustomError {
+	constructor(message?: string) {
+		super(ErrorNames.Creation, message)
 	}
 }

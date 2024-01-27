@@ -24,7 +24,7 @@ let intervalSpy = createSpy('Interval Function', intervalTest);
 let timeoutSpy = createSpy('Timeout Function', timeoutTest);
 describe('Timers', function () {
     beforeEach(() => {
-        if (validTimer === null || validTimer === void 0 ? void 0 : validTimer.isRunning)
+        if (validTimer?.isRunning)
             validTimer.stop();
         validTimer = new utils_1.Timer(timeoutConfig);
         invalidTimer = new utils_1.Timer();

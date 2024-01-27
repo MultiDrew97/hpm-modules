@@ -1,4 +1,6 @@
-export * from './utils.js'
+export * from './utils'
+
+export { encode, decode } from 'js-base64'
 
 export const API_PATHS = {
 	passwords: '/api/passwords',

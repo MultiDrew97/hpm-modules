@@ -1,7 +1,7 @@
 import { IAuth, IEntry, IUser, IUserConfig } from '../utils/interfaces'
 import { model, Model, Schema, SchemaTypes, Types, Document } from 'mongoose'
 import { encrypt } from '../utils/functions'
-import { DEFAULT_CONFIG } from 'utils/constants'
+import { DEFAULT_CONFIG } from '../utils/constants'
 import { ArgumentError, DatabaseError, LoginError } from '../utils/errors'
 import { PassEntry, CollectionName as passName } from './password'
 
