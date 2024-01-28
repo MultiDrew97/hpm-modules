@@ -20,7 +20,8 @@
     "ts-md5": "^1.2.11",
     "mongodb": "latest",
     "tslib": "^2.4.0",
-    "os": "^0.1.2"
+    "os": "^0.1.2",
+    "js-base64": "^3.7.6"
   },
   "devDependencies": {
     "@skypack/package-check": "^0.2.2",
