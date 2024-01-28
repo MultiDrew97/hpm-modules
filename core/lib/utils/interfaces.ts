@@ -1,4 +1,4 @@
-import { ConnectOptions } from 'mongoose'
+import { ConnectOptions } from 'mongodb'
 
 /**
  * The base class for any database entry
