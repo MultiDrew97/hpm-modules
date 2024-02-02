@@ -1,4 +1,5 @@
-const { cpus } = require('os')
+import { cpus } from 'os'
+import { wait } from './functions'
 
 /**
  * A lock that is granted when calling [[Semaphore.acquire]].
@@ -98,9 +99,6 @@ export class Semaphore {
 /***********************
  * Example usage below *
  ***********************/
-
-// Just a promise that resolves in `ms` milliseconds
-export const wait = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms))
 
 export class Mutex {
 	private static locked: boolean

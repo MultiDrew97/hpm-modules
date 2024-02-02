@@ -1,7 +1,8 @@
 import { ArgumentError } from '@herbivore/core/utils/errors'
 import { ConnectOptions, Types, isObjectIdOrHexString } from 'mongoose'
 
-export { connection, connect } from 'mongoose'
+// export { connection, connect } from 'mongoose'
+export { W, AuthMechanism } from 'mongodb'
 
 export type MongoConfig = {
 	config?: ConnectOptions
@@ -30,7 +31,8 @@ export function ManageConnection(_target: any, _methodName: any, desc: any) {
 
 			return rtn
 		} finally {
-			await this.close()
+			// FIXME: Refactor so that multiple connections don't close each other, but can use multiple connections per IP address
+			// await this.close()
 		}
 	}
 }

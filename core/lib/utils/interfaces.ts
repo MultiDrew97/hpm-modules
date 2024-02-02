@@ -54,13 +54,3 @@ export declare interface IDbConfig {
 	 */
 	options: ConnectOptions
 }
-
-/**
- * Connection options for a database connection
- * @deprecated Please use the ConnectOptions interface from
- * @see ConnectOptions
- */
-export declare interface IConnectOptions extends ConnectOptions {
-	useNewUrlParser: boolean
-	useUnifiedTopology: boolean
-}

@@ -9,3 +9,6 @@ export function encrypt(plainText: string, salt?: string): string {
 	// FIXME: Replace encryption with sha256
 	return Md5.hashStr(`${plainText}${salt}`)
 }
+
+// Just a promise that resolves in `ms` milliseconds
+export const wait = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms))
