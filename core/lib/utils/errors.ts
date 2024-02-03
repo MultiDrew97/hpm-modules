@@ -9,8 +9,8 @@ export class CustomError extends Error {
 }
 
 export class AuthorizationError extends CustomError {
-	constructor(name: string = ErrorNames.Authorization, message?: string, reason?: Error) {
-		super(name, message, reason)
+	constructor(message?: string, reason?: Error) {
+		super(ErrorNames.Authorization, message, reason)
 	}
 }
 
